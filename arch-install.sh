@@ -305,12 +305,12 @@ EOF
 # Configure ~/.Xresources
 echo "Configuring ~/.Xresources..."
 cat > ~/.Xresources <<EOF
-Xft.dpi: 96                    # Adjust for HiDPI (e.g., 120, 144)
-Xft.antialias: true            # Enable font anti-aliasing
-Xft.hinting: true              # Enable font hinting
-Xft.rgba: rgb                  # Subpixel rendering (rgb, bgr, vrgb, vbgr)
-Xft.hintstyle: hintslight       # Options: hintnone, hintslight, hintmedium, hintfull
-Xft.lcdfilter: lcddefault       # Smoother fonts
+Xft.dpi: 96 # Adjust for HiDPI (e.g., 120, 144)
+Xft.antialias: true # Enable font anti-aliasing
+Xft.hinting: true # Enable font hinting
+Xft.rgba: rgb # Subpixel rendering (rgb, bgr, vrgb, vbgr)
+Xft.hintstyle: hintslight # Options: hintnone, hintslight, hintmedium, hintfull
+Xft.lcdfilter: lcddefault # Smoother fonts
 Xcursor.theme: Adwaita
 Xcursor.size: 24
 EOF
@@ -327,9 +327,6 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
-
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo || echo "Failed to add Flathub."
 
 # General Shortcuts
@@ -343,9 +340,9 @@ alias ....='cd ../../..' # Go up three directories
 alias ~='cd ~' # Go to home directory
 
 # Safety & Confirmation
-alias cp='cp -i'   # Confirm before overwriting
-alias mv='mv -i'   # Confirm before moving
-alias rm='rm -i'   # Confirm before deleting
+alias cp='cp -i' # Confirm before overwriting
+alias mv='mv -i' # Confirm before moving
+alias rm='rm -i' # Confirm before deleting
 
 # File & Directory Management
 alias mkdir='mkdir -p' # Create parent directories if needed
@@ -359,11 +356,11 @@ alias ports='netstat -tulanp' # Show open ports
 alias speedtest='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -' # Speed test
 
 # System Monitoring
-alias cpu='lscpu'              # Show CPU details
-alias mem='free -h'            # Show memory usage
-alias disk='df -h'             # Show disk usage
+alias cpu='lscpu' # Show CPU details
+alias mem='free -h' # Show memory usage
+alias disk='df -h' # Show disk usage
 alias du1='du -h --max-depth=1' # Show folder sizes
-alias psme='ps aux | grep $USER'  # Show processes of current user
+alias psme='ps aux | grep $USER' # Show processes of current user
 
 # Package Management (For Arch Linux)
 alias update='sudo pacman -Syu' # Update system 
@@ -451,21 +448,21 @@ git config --global user.name "Tristen Grant"
 git config --global credential.helper store
 
 # Install DWM and Dmenu
-echo "Cloning your suckless Github repo"
+echo "Cloning your suckless Github repo..."
 cd ~/Github
 git clone https://github.com/tristengrant/suckless.git
 
-echo "Installing DWM"
+echo "Installing DWM..."
 cd ~/Github/suckless/dwm
 make
 sudo make clean install
 
-echo "Installing Dmenu"
+echo "Installing Dmenu..."
 cd ~/Github/suckless/dmenu
 make
 sudo make clean install
 
-echo "Installing DWMblocks"
+echo "Installing DWMblocks..."
 cd ~/Github/suckless/dwmblocks
 make
 sudo make clean install
@@ -474,6 +471,11 @@ sudo make clean install
 echo "Downloading wallpapers..."
 cd ~/Pictures
 git clone https://github.com/tristengrant/wallpapers.git
+
+# LazyVIM
+echo "VIM be lazy..."
+git clone https://github.com/LazyVim/starter ~/.config/nvim
+rm -rf ~/.config/nvim/.git
 
 # Finishing up
 echo "Installation complete. Reboot your system to apply all changes."
