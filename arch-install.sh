@@ -117,7 +117,6 @@ PACKAGES=(
     network-manager-applet
     qt5ct
     ttf-jetbrains-mono
-    ttf-jetbrains-mono-nerd
     ttf-hack-nerd
     ttf-terminus-nerd
     ttf-font-awesome
@@ -143,7 +142,6 @@ PACKAGES=(
     noto-fonts-emoji
     ttf-nerd-fonts-symbols
     picom
-    yoshimi
     swh-plugins
     alsa-plugins
     shellcheck
@@ -161,7 +159,6 @@ PACKAGES=(
     tldr
     zsh
     noise-suppression-for-voice
-    dragonfly-reverb
     ffmpeg
     libavif
     zsh-autosuggestions
@@ -170,7 +167,6 @@ PACKAGES=(
     xdg-utils
     autorandr
     xorg-xrdb
-    zynaddsubfx
     yq
     lua
     lua-language-server
@@ -207,7 +203,6 @@ PACKAGES=(
     reapack
     reaper
     lsp-plugins
-    mda.lv2
     obsidian
     lxappearance
     qt5ct
@@ -299,7 +294,7 @@ picom --experimental-backends -b
 clipster -d 2>/dev/null &
 
 #Start DWM
-#exec dwm
+exec dwm
 EOF
 
 # Configure ~/.Xresources
@@ -327,7 +322,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 
-flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo || echo "Failed to add Flathub."
+#flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo || echo "Failed to add Flathub."
 
 # General Shortcuts
 alias ls='ls --color=auto'
