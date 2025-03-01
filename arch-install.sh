@@ -117,8 +117,6 @@ PACKAGES=(
     network-manager-applet
     qt5ct
     ttf-jetbrains-mono
-    ttf-hack-nerd
-    ttf-terminus-nerd
     ttf-font-awesome
     zathura
     ncmpcpp
@@ -206,7 +204,6 @@ PACKAGES=(
     obsidian
     lxappearance
     qt5ct
-    papirus-icon-theme
     gparted
     playerctl
 )
@@ -263,7 +260,7 @@ echo "Installing Flatpak applications..."
 sudo pacman -S --noconfirm flatpak
 
 # Add the Flathub repository if it's not already added
-flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+#flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 # Install displaycal via Flatpak
 flatpak install flathub net.displaycal.DisplayCAL
