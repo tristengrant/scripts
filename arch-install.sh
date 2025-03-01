@@ -44,7 +44,6 @@ EOF
 # List of packages to install from the official repositories
 PACKAGES=(
     reflector
-    ly
     dunst
     kitty
     neovim
@@ -52,6 +51,7 @@ PACKAGES=(
     fastfetch
     openssh
     git
+    feh
     wget
     bottom
     lib32-mesa
@@ -116,6 +116,7 @@ PACKAGES=(
     networkmanager
     network-manager-applet
     qt5ct
+    ttf-jetbrains-mono
     ttf-jetbrains-mono-nerd
     ttf-hack-nerd
     ttf-terminus-nerd
@@ -190,6 +191,7 @@ PACKAGES=(
     lazygit
     vale
     haskell-pandoc
+    steam
     sox
     duperemove
     traceroute
@@ -208,6 +210,7 @@ PACKAGES=(
     mda.lv2
     obsidian
     lxappearance
+    qt5ct
 )
 
 # List of packages to install from the AUR
@@ -253,10 +256,6 @@ sudo usermod -aG realtime,video,audio,input "$USER"
 echo "Enabling NetworkManager and CUPS..."
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable --now cups
-
-# Enable Ly for logging in
-sudo systemctl enable ly.service
-sudo systemctl start ly.service
 
 # Install Flatpak applications
 echo "Installing Flatpak applications..."
