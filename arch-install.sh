@@ -299,7 +299,19 @@ picom --experimental-backends -b
 clipster -d 2>/dev/null &
 
 #Start DWM
-exec dwm
+#exec dwm
+EOF
+
+# Create .desktop file for DWM
+echo "Creating .desktop file for DWM..."
+sudo cat > /usr/share/xsessions/dwm.desktop <<EOF
+[Desktop Entry]
+Encoding=UTF-8
+Name=DWM
+Comment=Dynamic window manager
+Exec=dwm
+Icon=dwm
+Type=XSession
 EOF
 
 # Configure ~/.Xresources
@@ -476,6 +488,10 @@ git clone https://github.com/tristengrant/wallpapers.git
 echo "VIM be lazy..."
 git clone https://github.com/LazyVim/starter ~/.config/nvim
 rm -rf ~/.config/nvim/.git
+
+# Install Ly display manager
+echo "Installing Ly..."
+sudo pacman -S ly
 
 # Finishing up
 echo "Installation complete. Reboot your system to apply all changes."
