@@ -254,6 +254,10 @@ echo "Enabling NetworkManager and CUPS..."
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable --now cups
 
+# Enable Ly for logging in
+sudo systemctl enable ly.service
+sudo systemctl start ly.service
+
 # Install Flatpak applications
 echo "Installing Flatpak applications..."
 
