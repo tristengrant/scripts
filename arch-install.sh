@@ -247,7 +247,7 @@ done
 
 # Post-installation setup
 echo "Adding user to the realtime group for audio performance."
-sudo usermod -aG realtime "$USER"
+sudo usermod -aG realtime,video,audio,input "$USER"
 
 # Enable required services
 echo "Enabling NetworkManager and CUPS..."
@@ -442,14 +442,17 @@ gtk-cursor-theme-name="xcursor-simp1e-gruvbox-dark"
 gtk-cursor-theme-size=24
 EOF
 
-# Install DWM, Dmenu, St
+# Install DWM and Dmenu
+echo "Cloning your suckless Github repo"
 cd ~/Github
 git clone https://github.com/tristengrant/suckless.git
 
+echo "Installing DWM"
 cd ~/Github/suckless/dwm
 make
 sudo make clean install
 
+echo "Installing Dmenu"
 cd ~/Github/suckless/dmenu
 make
 sudo make clean install
