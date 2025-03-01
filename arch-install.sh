@@ -224,6 +224,9 @@ AUR_PACKAGES=(
     neovim-gruvbox-material-git
     gruvbox-material-gtk-theme-git
     gruvbox-material-icon-theme-git
+    xcursor-simp1e-gruvbox-dark
+    xcursor-simp1e-gruvbox-light
+    gruvbox-plus-icon-theme-git
     kimageformats
     appimagelauncher
     flatseal
@@ -306,7 +309,7 @@ Xft.hinting: true # Enable font hinting
 Xft.rgba: rgb # Subpixel rendering (rgb, bgr, vrgb, vbgr)
 Xft.hintstyle: hintslight # Options: hintnone, hintslight, hintmedium, hintfull
 Xft.lcdfilter: lcddefault # Smoother fonts
-Xcursor.theme: Adwaita
+Xcursor.theme: Simp1e-Gruvbox-Dark
 Xcursor.size: 24
 EOF
 
@@ -404,7 +407,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 
-export XCURSOR_THEME=Adwaita
+export XCURSOR_THEME=Simp1e-Gruvbox-Dark
 export XCURSOR_SIZE=24
 export GTK_THEME=Gruvbox-Material-Dark
 export QT_QPA_PLATFORMTHEME=qt5ct
@@ -423,7 +426,7 @@ cat > ~/.config/gtk-3.0/settings.ini <<EOF
 [Settings]
 gtk-application-prefer-dark-theme=1
 gtk-icon-theme-name=Gruvbox-Material-Dark
-gtk-1-theme-name=Adwaita
+gtk-1-theme-name=Simp1e-Gruvbox-Dark
 gtk-cursor-theme-size=24
 EOF
 
@@ -433,7 +436,7 @@ touch ~/.gtkrc-2.0
 echo "Configuring ~/.gtkrc-2.0"
 cat > ~/.gtkrc-2.0 <<EOF
 gtk-icon-theme-name="Gruvbox-Material-Dark"
-gtk-cursor-theme-name="Adwaita"
+gtk-cursor-theme-name="Simp1e-Gruvbox-Dark"
 gtk-cursor-theme-size=24
 EOF
 
@@ -476,14 +479,7 @@ rm -rf ~/.config/nvim/.git
 echo "Startx at login"
 cat > ~/.bash_profile <<EOF
 # startx on login
-[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] || return
-echo
-read -p "Start Xorg[Y/y]? " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-    startx
-fi 
+startx
 EOF
 # Finishing up
 echo "Installation complete. Reboot your system to apply all changes."
