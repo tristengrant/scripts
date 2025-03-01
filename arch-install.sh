@@ -229,6 +229,7 @@ AUR_PACKAGES=(
     kimageformats
     appimagelauncher
     flatseal
+    xremap-x11-bin
 )
 
 # Install official packages
