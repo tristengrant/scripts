@@ -302,18 +302,6 @@ clipster -d 2>/dev/null &
 #exec dwm
 EOF
 
-# Create .desktop file for DWM
-echo "Creating .desktop file for DWM..."
-sudo cat > /usr/share/xsessions/dwm.desktop <<EOF
-[Desktop Entry]
-Encoding=UTF-8
-Name=DWM
-Comment=Dynamic window manager
-Exec=dwm
-Icon=dwm
-Type=XSession
-EOF
-
 # Configure ~/.Xresources
 echo "Configuring ~/.Xresources..."
 cat > ~/.Xresources <<EOF
@@ -489,9 +477,18 @@ echo "VIM be lazy..."
 git clone https://github.com/LazyVim/starter ~/.config/nvim
 rm -rf ~/.config/nvim/.git
 
-# Install Ly display manager
-echo "Installing Ly..."
-sudo pacman -S ly
-
+# Startx at login
+echo "Startx at login"
+cat > ~/.bash_profile <<EOF
+# startx on login
+[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] || return
+echo
+read -p "Start Xorg[Y/y]? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    startx
+fi 
+EOF
 # Finishing up
 echo "Installation complete. Reboot your system to apply all changes."
