@@ -207,14 +207,13 @@ PACKAGES=(
     lxappearance
     qt5ct
     papirus-icon-theme
+    gparted
 )
 
 # List of packages to install from the AUR
 AUR_PACKAGES=(
     bitwarden-bin
     clipster
-    yabridge
-    carla
     syncthing-gtk
     xdg-ninja
     z.lua
