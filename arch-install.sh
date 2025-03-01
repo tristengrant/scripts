@@ -25,7 +25,7 @@ install_paru() {
 install_paru
 
 # Create necessary directories
-mkdir -p ~/Applications ~/Github ~/Scripts ~/Desktop ~/Documents ~/Music ~/Pictures ~/Public ~/Templates ~/Videos ~/Pictures/screenshots
+mkdir -p ~/Applications ~/Github ~/Documents ~/Music ~/Pictures ~/Videos ~/Pictures/screenshots
 
 # Set up AMD GPU Conf file
 sudo chmod 755 /etc/X11/xorg.conf.d/
@@ -481,7 +481,6 @@ rm -rf ~/.config/nvim/.git
 # Startx at login
 echo "Startx at login"
 cat > ~/.bash_profile <<EOF
-# startx on login
 startx
 EOF
 
