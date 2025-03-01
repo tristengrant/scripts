@@ -445,6 +445,11 @@ gtk-cursor-theme-name="Adwaita"
 gtk-cursor-theme-size=24
 EOF
 
+# Set up git
+git config --global user.email hello@tristengrant.com
+git config --global user.name "Tristen Grant"
+git config --global credential.helper store
+
 # Install DWM and Dmenu
 echo "Cloning your suckless Github repo"
 cd ~/Github
