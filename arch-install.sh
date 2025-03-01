@@ -25,7 +25,21 @@ install_paru() {
 install_paru
 
 # Create necessary directories
-mkdir -p ~/Github ~/Scripts
+mkdir -p ~/Applications ~/Github ~/Scripts ~/Desktop ~/Documents ~/Music ~/Pictures ~/Public ~/Templates ~/Videos ~/Pictures/screenshots
+
+# Set up AMD GPU Conf file
+sudo chmod 755 /etc/X11/xorg.conf.d/
+
+# Create the file with root privileges and set the content
+sudo tee /etc/X11/xorg.conf.d/20-amdgpu.conf > /dev/null <<EOF
+Section "Device"
+	Identifier "AMD Graphics"
+	Driver "amdgpu"
+	Option "TearFree" "true"
+	Option "DRI" "3"
+	Option "AccelMethod" "glamor"
+EndSection
+EOF
 
 # List of packages to install from the official repositories
 PACKAGES=(
@@ -91,7 +105,7 @@ PACKAGES=(
     jq
     pipewire
     pipewire-pulse
-    wire-plumber
+    wireplumber
     pipewire-jack
     helvum
     pamixer
@@ -100,14 +114,12 @@ PACKAGES=(
     system-config-printer
     glabels
     networkmanager
-    nmcli
     network-manager-applet
     qt5ct
-    jetbrains-mono
-    hack
-    terminus
+    ttf-jetbrains-mono-nerd
+    ttf-hack-nerd
+    ttf-terminus-nerd
     ttf-font-awesome
-    iosevka
     zathura
     ncmpcpp
     mpd
@@ -123,7 +135,6 @@ PACKAGES=(
     realtime-privileges
     alsa-utils
     tmux
-    gpg
     p7zip
     unrar
     lrzip
@@ -133,7 +144,6 @@ PACKAGES=(
     picom
     yoshimi
     swh-plugins
-    setBfree
     alsa-plugins
     shellcheck
     htop
@@ -166,7 +176,7 @@ PACKAGES=(
     tcpdump
     nmap
     smartmontools
-    lsusb
+    cyme
     gcolor3
     libgsf
     xournalpp
@@ -193,10 +203,11 @@ PACKAGES=(
     enchant
     darktable
     reapack
-    reaper-bin
+    reaper
     lsp-plugins
     mda.lv2
-    yabridgectl
+    obsidian
+    lxappearance
 )
 
 # List of packages to install from the AUR
@@ -211,16 +222,13 @@ AUR_PACKAGES=(
     chkrootkit
     fzf-extras
     fzf-tab-git
-    helm-synth-lv2
     xcursor-simp1e-gruvbox-dark
     neovim-gruvbox-material-git
     gruvbox-material-icon-theme-git
     gruvbox-material-gtk-theme-git
     kimageformats
     appimagelauncher
-    vcvrack-pro
-    yabridge-bin
-    carla-git
+    flatseal
 )
 
 # Install official packages
@@ -228,6 +236,14 @@ sudo pacman -S --needed --noconfirm "${PACKAGES[@]}"
 
 # Install AUR packages using paru
 paru -S --needed --noconfirm "${AUR_PACKAGES[@]}"
+
+for pkg in "${AUR_PACKAGES[@]}"; do
+	if ! paru -Q "$pkg" &>/dev/null; then
+		paru -S --needed --noconfirm "$pkg"
+	else
+		echo "$pkg is already installed."
+	fi
+done
 
 # Post-installation setup
 echo "Adding user to the realtime group for audio performance."
@@ -237,6 +253,18 @@ sudo usermod -aG realtime "$USER"
 echo "Enabling NetworkManager and CUPS..."
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable --now cups
+
+# Install Flatpak applications
+echo "Installing Flatpak applications..."
+
+# Ensure Flatpak is installed
+sudo pacman -S --noconfirm flatpak
+
+# Add the Flathub repository if it's not already added
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+# Install displaycal via Flatpak
+flatpak install flathub net.displaycal.DisplayCAL
 
 # Configure ~/.xinitrc
 echo "Configuring ~/.xinitrc..."
@@ -299,6 +327,8 @@ export XDG_DATA_HOME="$HOME/.local/share"
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo || echo "Failed to add Flathub."
+
 # General Shortcuts
 alias ls='ls --color=auto'
 alias ll='ls -la --color=auto'
@@ -318,7 +348,7 @@ alias rm='rm -i'   # Confirm before deleting
 alias mkdir='mkdir -p' # Create parent directories if needed
 alias untar='tar -xvf' # Extract tar files
 alias zipf='zip -r' # Create a zip file
-alias mkcd='foo() { mkdir -p "$1" && cd "$1"; }; foo' # Create and enter a directory
+alias mkcd='foo() { mkdir -p "$1" && cd "$1" || echo "Failed to create and cd into directory $1"; }; foo'
 
 # Networking
 alias myip="curl ifconfig.me" # Show public IP
@@ -381,13 +411,48 @@ export XDG_DATA_HOME="$HOME/.local/share"
 
 export XCURSOR_THEME=xcursor-simp1e-gruvbox-dark
 export XCURSOR_SIZE=24
-export GTK_THEME=Adwaita:dark
+export GTK_THEME=gruvbox-material
 export QT_QPA_PLATFORMTHEME=qt5ct
 export GTK_USE_PORTAL=1
 export _JAVA_AWT_WM_NONREPARENTING=1 # Fix Java apps in tiling WMs
 export MOZ_ENABLE_WAYLAND=0 # Force Firefox to use X11 (if you switch to Wayland later, remove this)
-export XDG_CURRENT_DESKTOP=gtk
+export XDG_CURRENT_DESKTOP=Gnome
 EOF
+
+# Configure ~/.config/gtk-3.0/settings.ini
+mkdir -p ~/.config/gtk-3.0
+touch ~/.config/gtk-3.0/settings.ini
+
+echo "Configuring ~/.config/gtk-3.0/settings.ini"
+cat > ~/.config/gtk-3.0/settings.ini <<EOF
+[Settings]
+gtk-application-prefer-dark-theme=1
+gtk-icon-theme-name=gruvbox-material
+gtk-cursor-theme-name=xcursor-simp1e-gruvbox-dark
+gtk-cursor-theme-size=24
+EOF
+
+# Configure ~/.gtkrc-2.0
+touch ~/.gtkrc-2.0
+
+echo "Configuring ~/.gtkrc-2.0"
+cat > ~/.gtkrc-2.0 <<EOF
+gtk-icon-theme-name="gruvbox-material"
+gtk-cursor-theme-name="xcursor-simp1e-gruvbox-dark"
+gtk-cursor-theme-size=24
+EOF
+
+# Install DWM, Dmenu, St
+cd ~/Github
+git clone https://github.com/tristengrant/suckless.git
+
+cd ~/Github/suckless/dwm
+make
+sudo make clean install
+
+cd ~/Github/suckless/dmenu
+make
+sudo make clean install
 
 # Finishing up
 echo "Installation complete. Reboot your system to apply all changes."
