@@ -485,6 +485,7 @@ EOF
 
 # Setting default font
 echo "Setting JetBrains Mono as default font..."
+mkdir ~/.config/fontconfig
 cat > ~/.config/fontconfig/fonts.conf <<EOF
 <?xml version="1.0"?>
 <fontconfig>
@@ -508,6 +509,7 @@ EOF
 
 # Add Kitty terminal config
 echo "Setting up Kitty... meow!"
+mkdir -p ~/.config/kitty
 cat > ~/.config/kitty/kitty.conf <<EOF# Set JetBrains Mono as the default font
 font_family JetBrains Mono
 font_size 12
