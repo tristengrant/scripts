@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Source the dmenu configuration file
+. ~/Scripts/dmenu-config.sh
+
+choice=$(echo -e "Shutdown\nReboot\nLogout" | "${DMENU_CMD[@]}" -p "Power Options:")
+
+case "$choice" in
+    Shutdown) poweroff ;;
+    Reboot) reboot ;;
+    Logout) pkill -KILL -u "$USER" ;;
+    *) exit 1 ;;
+esac
