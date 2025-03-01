@@ -211,6 +211,7 @@ PACKAGES=(
     obsidian
     lxappearance
     qt5ct
+    papirus-icon-theme
 )
 
 # List of packages to install from the AUR
@@ -225,10 +226,9 @@ AUR_PACKAGES=(
     chkrootkit
     fzf-extras
     fzf-tab-git
-    xcursor-simp1e-gruvbox-dark
     neovim-gruvbox-material-git
-    gruvbox-material-icon-theme-git
     gruvbox-material-gtk-theme-git
+    gruvbox-material-icon-theme-git
     kimageformats
     appimagelauncher
     flatseal
@@ -311,7 +311,7 @@ Xft.hinting: true              # Enable font hinting
 Xft.rgba: rgb                  # Subpixel rendering (rgb, bgr, vrgb, vbgr)
 Xft.hintstyle: hintslight       # Options: hintnone, hintslight, hintmedium, hintfull
 Xft.lcdfilter: lcddefault       # Smoother fonts
-Xcursor.theme: xcursor-simp1e-gruvbox-dark
+Xcursor.theme: Adwaita
 Xcursor.size: 24
 EOF
 
@@ -412,9 +412,9 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 
-export XCURSOR_THEME=xcursor-simp1e-gruvbox-dark
+export XCURSOR_THEME=Adwaita
 export XCURSOR_SIZE=24
-export GTK_THEME=gruvbox-material-dark
+export GTK_THEME=Gruvbox-Material-Dark
 export QT_QPA_PLATFORMTHEME=qt5ct
 export GTK_USE_PORTAL=1
 export _JAVA_AWT_WM_NONREPARENTING=1 # Fix Java apps in tiling WMs
@@ -430,8 +430,8 @@ echo "Configuring ~/.config/gtk-3.0/settings.ini"
 cat > ~/.config/gtk-3.0/settings.ini <<EOF
 [Settings]
 gtk-application-prefer-dark-theme=1
-gtk-icon-theme-name=gruvbox-material-dark-dark
-gtk-cursor-theme-name=xcursor-simp1e-gruvbox-dark
+gtk-icon-theme-name=Gruvbox-Material-Dark
+gtk-1-theme-name=Adwaita
 gtk-cursor-theme-size=24
 EOF
 
@@ -440,8 +440,8 @@ touch ~/.gtkrc-2.0
 
 echo "Configuring ~/.gtkrc-2.0"
 cat > ~/.gtkrc-2.0 <<EOF
-gtk-icon-theme-name="gruvbox-material-dark"
-gtk-cursor-theme-name="xcursor-simp1e-gruvbox-dark"
+gtk-icon-theme-name="Gruvbox-Material-Dark"
+gtk-cursor-theme-name="Adwaita"
 gtk-cursor-theme-size=24
 EOF
 
@@ -464,6 +464,11 @@ echo "Installing DWMblocks"
 cd ~/Github/suckless/dwmblocks
 make
 sudo make clean install
+
+# Desktop wallpapers
+echo "Downloading wallpapers..."
+cd ~/Pictures
+git clone https://github.com/tristengrant/wallpapers.git
 
 # Finishing up
 echo "Installation complete. Reboot your system to apply all changes."
