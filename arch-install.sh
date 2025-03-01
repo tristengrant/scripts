@@ -393,7 +393,9 @@ alias tgsite='cd ~/Github/tristengrant/'
 alias cbcomic='cd ~/Github/catandbotcomic/'
 alias suckless='cd ~/Github/suckless/ && ls'
 
-PS1='[\u@\h \W]\$ '
+# PS1='[\u@\h \W]\$ ' Original
+
+PS1='\[\033[38;5;214m\]\u\[\033[0m\]@\[\033[38;5;82m\]\h\[\033[0m\] \W\$ '
 
 export PATH="$HOME/Scripts:$HOME/Github:$HOME/Applications:$PATH"
 EOF
