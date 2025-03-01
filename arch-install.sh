@@ -481,5 +481,62 @@ cat > ~/.bash_profile <<EOF
 # startx on login
 startx
 EOF
+
+# Setting default font
+echo "Setting JetBrains Mono as default font..."
+cat > ~/.config/fontconfig/fonts.conf <<EOF
+<?xml version="1.0"?>
+<fontconfig>
+    <match>
+        <test name="family">
+            <string>monospace</string>
+        </test>
+        <edit name="family" mode="prepend">
+            <string>JetBrains Mono</string>
+        </edit>
+    </match>
+</fontconfig>
+EOF
+
+fc-cache -fv
+
+cat > ~/.config/QtProject.conf <<EOF
+[General]
+font="JetBrains Mono,12"
+EOF
+
+# Add Kitty terminal config
+echo "Setting up Kitty... meow!"
+cat > ~/.config/kitty/kitty.conf <<EOF
+font_family JetBrains Mono
+font_size 12
+enable_audio_bell no
+padding 10
+enable_truecolor yes
+use_gpu yes
+scrollback_lines 10000
+foreground #c5c8c6
+background #1e1e1e
+cursor #c5c8c6
+cursor_shape bar # set to block, underline or bar
+scrollback_pager_mode yes
+scrollback_lines 10000
+font_hinting full
+font_antialiasing subpixel
+cursor_blinking no
+shell /bin/bash
+hide_window_decorations yes
+#initial_window_width 120
+#initial_window_height 30
+
+mouse_hide_delay 0.5    # Hide the mouse after a short delay
+renderer "opengl"
+mouse_reporting no
+
+# Enable clipboard support and bind Ctrl+C (copy) and Ctrl+V (paste)
+map ctrl+c copy_to_clipboard
+map ctrl+v paste_from_clipboard
+EOF
+
 # Finishing up
 echo "Installation complete. Reboot your system to apply all changes."
