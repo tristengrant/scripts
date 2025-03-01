@@ -208,6 +208,7 @@ PACKAGES=(
     qt5ct
     papirus-icon-theme
     gparted
+    playerctl
 )
 
 # List of packages to install from the AUR
@@ -511,57 +512,27 @@ EOF
 # Add Kitty terminal config
 echo "Setting up Kitty... meow!"
 mkdir -p ~/.config/kitty
-cat > ~/.config/kitty/kitty.conf <<EOF# Set JetBrains Mono as the default font
+cat > ~/.config/kitty/kitty.conf <<EOF
 font_family JetBrains Mono
 font_size 12
-
-# Turn off all sounds (bell, terminal sounds, etc.)
 enable_audio_bell no
-
-# Set a margin of 10px on all edges (up, down, left, right)
 padding 10
-
-# Enable TrueColor support for better color accuracy
 enable_truecolor yes
-
-# Use the GPU for rendering (for better performance on supported hardware)
 use_gpu yes
-
-# Set scrollback buffer to a reasonable size for history
 scrollback_lines 10000
-
-# Set foreground and background colors
 foreground #c5c8c6
 background #1e1e1e
-
-# Set cursor color (ensure it matches the foreground or desired color)
 cursor #c5c8c6
-
-# Set cursor style to bar (can be block or underline as well)
-cursor_shape bar
-
-# Enable scrollback pager mode (improves the scroll experience)
+cursor_shape bar # can be block, line, bar
 scrollback_pager_mode yes
-
-# Font rendering optimizations for clarity
 font_hinting full
 font_antialiasing subpixel
-
-# Disable cursor blinking for a cleaner experience
 cursor_blinking no
-
-# Set default shell (you can replace it with your preferred shell)
 shell /bin/bash
-
-# Hide window decorations (optional, to get a cleaner look)
 hide_window_decorations yes
-
-# Configure mouse behavior
 mouse_hide_delay 0.5  # Hide the mouse after a short delay
 renderer "opengl"      # Enable modern OpenGL renderer for better performance
-mouse_reporting no     # Don't allow mouse dragging selection (more precise typing)
-
-# Enable clipboard support and bind Ctrl+C (copy) and Ctrl+V (paste)
+mouse_reporting no     # Don't allow mouse dragging selection
 map ctrl+c copy_to_clipboard
 map ctrl+v paste_from_clipboard
 EOF
