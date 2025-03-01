@@ -414,7 +414,7 @@ export XDG_DATA_HOME="$HOME/.local/share"
 
 export XCURSOR_THEME=xcursor-simp1e-gruvbox-dark
 export XCURSOR_SIZE=24
-export GTK_THEME=gruvbox-material
+export GTK_THEME=gruvbox-material-dark
 export QT_QPA_PLATFORMTHEME=qt5ct
 export GTK_USE_PORTAL=1
 export _JAVA_AWT_WM_NONREPARENTING=1 # Fix Java apps in tiling WMs
@@ -430,7 +430,7 @@ echo "Configuring ~/.config/gtk-3.0/settings.ini"
 cat > ~/.config/gtk-3.0/settings.ini <<EOF
 [Settings]
 gtk-application-prefer-dark-theme=1
-gtk-icon-theme-name=gruvbox-material
+gtk-icon-theme-name=gruvbox-material-dark-dark
 gtk-cursor-theme-name=xcursor-simp1e-gruvbox-dark
 gtk-cursor-theme-size=24
 EOF
@@ -440,7 +440,7 @@ touch ~/.gtkrc-2.0
 
 echo "Configuring ~/.gtkrc-2.0"
 cat > ~/.gtkrc-2.0 <<EOF
-gtk-icon-theme-name="gruvbox-material"
+gtk-icon-theme-name="gruvbox-material-dark"
 gtk-cursor-theme-name="xcursor-simp1e-gruvbox-dark"
 gtk-cursor-theme-size=24
 EOF
@@ -457,6 +457,11 @@ sudo make clean install
 
 echo "Installing Dmenu"
 cd ~/Github/suckless/dmenu
+make
+sudo make clean install
+
+echo "Installing DWMblocks"
+cd ~/Github/suckless/dwmblocks
 make
 sudo make clean install
 
