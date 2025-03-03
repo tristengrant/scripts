@@ -212,7 +212,7 @@ PACKAGES=(
 # List of packages to install from the AUR
 AUR_PACKAGES=(
   vcvrack
-  #bitwarden-bin
+  bitwarden-bin
   clipster
   xdg-ninja
   z.lua
@@ -285,10 +285,6 @@ fi
 # Install displaycal via Flatpak
 echo "Installing DisplayCAL Flatpak..."
 flatpak install -y flathub net.displaycal.DisplayCAL
-
-#Install Bitwarden via Flatpak
-echo "Installing Bitwarden Flatpak..."
-flatpak install -y flathub com.bitwarden.dektop
 
 # Clone dotfiles repo
 echo "Cloning dotfiles repo..."
