@@ -16,5 +16,5 @@ ln -sf ~/Github/dotfiles/config/gtk-3.0 ~/.config
 ln -sf ~/Github/dotfiles/config/kitty ~/.config
 ln -sf ~/Github/dotfiles/config/QtProject.conf ~/.config
 ln -sf ~/Github/dotfiles/config/qt5ct ~/.config
+ln -sf ~/Github/dotfiles/config/Kvantum ~/.config
 ln -sf ~/Github/dotfiles/config/nvim ~/.config
-
