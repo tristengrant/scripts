@@ -16,6 +16,15 @@ install_paru() {
     git clone https://aur.archlinux.org/paru-bin.git ~/paru-bin
     cd ~/paru-bin && makepkg -si --noconfirm
     cd ~ && rm -rf ~/paru-bin
+
+    # Check again to confirm installation
+    if command -v paru &>/dev/null; then
+      echo "Paru has been successfully installed."
+    else
+      echo "Error: Paru installation failed. Please check the logs and install it manually."
+      exit 1
+    fi
+
   else
     echo "paru is already installed."
   fi
@@ -25,9 +34,10 @@ install_paru() {
 install_paru
 
 # Create necessary directories
-mkdir -p ~/Applications ~/Github ~/Documents ~/Music ~/Pictures ~/Videos ~/Pictures/screenshots
+mkdir -p ~/Applications ~/Github ~/Documents ~/Music ~/Pictures/{screenshots} ~/Videos
 
 # Set up AMD GPU Conf file
+sudo mkdir -p /etc/X11/xorg.conf.d/
 sudo chmod 755 /etc/X11/xorg.conf.d/
 
 # Create the file with root privileges and set the content
@@ -43,189 +53,178 @@ EOF
 
 # List of packages to install from the official repositories
 PACKAGES=(
+  networkmanager
+  network-manager-applet
   reflector
-  dunst
-  kitty
-  neovim
-  tree-sitter
-  fastfetch
-  openssh
-  git
-  feh
   wget
-  bottom
-  lib32-mesa
-  vulkan-radeon
-  lib32-vulkan-radeon
+  git
+  openssh
+  tmux
+  p7zip
+  unrar
+  lrzip
+  trash-cli
+  udiskie
   xorg-server
   xorg-xinit
   xorg-xrandr
   xorg-xsetroot
   xorg-xinput
-  sws
-  arandr
-  libwacom
-  xf86-input-wacom
-  mpv
-  unclutter
-  xdg-user-dirs
+  xorg-xprop
+  xorg-xev
+  xorg-xwininfo
+  xorg-xdpyinfo
+  xorg-xrdb
+  lib32-mesa
+  vulkan-radeon
+  lib32-vulkan-radeon
+  xclip
+  xdotool
+  libnotify
+  picom
+  pipewire
+  pipewire-pulse
+  pipewire-jack
+  wireplumber
+  helvum
+  pamixer
+  pavucontrol
+  alsa-utils
+  alsa-plugins
+  realtime-privileges
+  rtirq
+  cups
+  nfs-utils
+  system-config-printer
+  glabels
   bat
   lsd
-  sxiv
-  ranger
-  libheif
-  imagemagick
   fzf
   ripgrep
   ripgrep-all
-  sxhkd
-  go
-  pnpm
-  nodejs
-  sassc
+  fd
+  jq
+  yq
+  shellcheck
+  htop
+  bmon
+  ncdu
+  duf
+  nmap
+  iperf3
+  smartmontools
+  lazygit
+  vale
+  direnv
+  starship
+  lua
+  lua-language-server
   hugo
+  sassc
+  go
+  nodejs
+  bottom
+  pnpm
+  haskell-pandoc
+  libwacom
+  xf86-input-wacom
+  neovim
+  tree-sitter
+  kitty
+  dunst
+  feh
+  sxhkd
+  arandr
+  lxappearance
+  qt5ct
+  kvantum
+  polkit-gnome
+  clipmenu
+  satty
+  sxiv
+  ranger
   ueberzug
+  xdg-utils
+  xdg-user-dirs
+  xdg-desktop-portal-gtk
+  brightnessctl
+  flatpak
+  ffmpegthumbnailer
+  tumbler
+  file-roller
+  ffmpeg
+  imagemagick
+  libheif
+  libavif
+  webp-pixbuf-loader
+  mpv
+  mpd
+  mpc
+  mpd-mpris
+  ncmpcpp
+  unclutter
   thunar
-  steam
+  thunar-archive-plugin
+  thunar-volman
+  thunar-media-tags-plugin
+  thunar-shares-plugin
   gvfs
   gvfs-smb
   smbclient
   cifs-utils
-  tumbler
-  ffmpegthumbnailer
-  thunar-archive-plugin
-  file-roller
-  thunar-volman
-  thunar-media-tags-plugin
-  thunar-shares-plugin
   firefox
-  polkit-gnome
-  clipmenu
-  satty
-  jq
-  pipewire
-  pipewire-pulse
-  wireplumber
-  pipewire-jack
-  helvum
-  pamixer
-  pavucontrol
-  cups
-  system-config-printer
-  glabels
-  networkmanager
-  network-manager-applet
-  qt5ct
-  ttf-jetbrains-mono
-  ttf-font-awesome
-  zathura
-  ncmpcpp
-  mpd
-  mpd-mpris
-  fd
-  xclip
-  xdotool
-  xorg-xprop
-  xorg-xev
-  duf
-  ncdu
-  aria2
-  realtime-privileges
-  alsa-utils
-  tmux
-  p7zip
-  unrar
-  lrzip
-  clamav
-  noto-fonts-emoji
-  ttf-nerd-fonts-symbols
-  picom
-  swh-plugins
-  alsa-plugins
-  shellcheck
-  htop
-  trash-cli
-  xorg-xdpyinfo
-  webp-pixbuf-loader
+  obsidian
+  darktable
+  reaper
+  reapack
+  sws
+  playerctl
+  syncthing
   lynis
   rkhunter
-  udiskie
-  brightnessctl
-  xdg-desktop-portal-gtk
-  flatpak
-  libnotify
-  tldr
-  zsh
-  noise-suppression-for-voice
-  ffmpeg
-  libavif
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-  zsh-history-substring-search
-  xdg-utils
-  autorandr
-  xorg-xrdb
-  yq
-  lua
-  lua-language-server
-  tcpdump
-  nmap
-  smartmontools
   cyme
-  gcolor3
-  libgsf
-  xournalpp
-  libappimage
-  shellharden
-  iperf3
-  arp-scan
-  starship
-  direnv
-  lazygit
-  vale
-  haskell-pandoc
-  steam
+  ttf-jetbrains-mono
+  ttf-nerd-fonts-symbols
+  noto-fonts-emoji
+  noise-suppression-for-voice
+  pdfgrep
   sox
   duperemove
-  traceroute
-  bmon
-  pdfgrep
-  translate-shell
-  xorg-xwininfo
-  rtirq
+  shellharden
+  gparted
+  xournalpp
+  libgsf
+  libappimage
+  swh-plugins
+  lsp-plugins
+  gcolor3
+  zathura
   hunspell
   hunspell-en_ca
   enchant
-  darktable
-  reapack
-  reaper
-  lsp-plugins
-  obsidian
-  lxappearance
-  qt5ct
-  kvantum
-  gparted
-  playerctl
+  steam
+  zsh
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  zsh-history-substring-search
 )
 
 # List of packages to install from the AUR
 AUR_PACKAGES=(
+  vcvrack
   bitwarden-bin
   clipster
-  syncthing-gtk
   xdg-ninja
   z.lua
-  chkrootkit
   fzf-extras
   fzf-tab-git
-  neovim-gruvbox-material-git
   gruvbox-material-gtk-theme-git
   gruvbox-material-icon-theme-git
   xcursor-simp1e-gruvbox-dark
-  gruvbox-plus-icon-theme-git
   kimageformats
-  appimagelauncher
   flatseal
+  tiger
+  chkrootkit
   xremap-x11-bin
 )
 
@@ -237,38 +236,102 @@ paru -S --needed --noconfirm "${AUR_PACKAGES[@]}"
 
 for pkg in "${AUR_PACKAGES[@]}"; do
   if ! paru -Q "$pkg" &>/dev/null; then
+    echo "Installing $pkg..."
     paru -S --needed --noconfirm "$pkg"
+  fi
+done
+
+# Final confirmation that all AUR packages were installed
+for pkg in "${AUR_PACKAGES[@]}"; do
+  if paru -Q "$pkg" &>/dev/null; then
+    echo "$pkg installation confirmed."
   else
-    echo "$pkg is already installed."
+    echo "Error: $pkg failed to install."
   fi
 done
 
 # Post-installation setup
-echo "Adding user to the realtime group for audio performance."
-sudo usermod -aG tty,realtime,video,audio,input "$USER"
+echo "Adding user to various groups..."
+for grp in tty realtime video audio input; do
+  if ! groups "$USER" | grep -qw "$grp"; then
+    sudo usermod -aG "$grp" "$USER"
+  fi
+done
+
+# Make sure all of your scripts are executable
+if [ -d ~/Scripts ]; then
+  chmod +x ~/Scripts/*
+else
+  echo "Script directory not found. Skipping."
+fi
 
 # Enable required services
 echo "Enabling NetworkManager and CUPS..."
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable --now cups
 
+# Enable MPD service
+systemctl --user enable mpd
+systemctl --user start mpd
+
 # Install Flatpak applications
 echo "Installing Flatpak applications..."
-
 # Ensure Flatpak is installed
-sudo pacman -S --noconfirm flatpak
-
+if ! command -v flatpak &>/dev/null; then
+  sudo pacman -S --noconfirm flatpak
+else
+  echo "Flatpak is already installed."
+fi
 # Install displaycal via Flatpak
-flatpak install flathub net.displaycal.DisplayCAL
+flatpak install -y flathub net.displaycal.DisplayCAL
 
 # Clone dotfiles repo
 echo "Cloning dotfiles repo..."
-git clone https://github.com/tristengrant/dotfiles.git ~/Scripts/dotfiles
+if [ ! -d ~/Scripts/dotfiles ]; then
+  git clone https://github.com/tristengrant/dotfiles.git ~/Scripts/dotfiles
+else
+  echo "Dotfiles repository already exists."
+fi
 
 # Symlinking dotfiles
-cd ~/Scripts
-./symlink_dotfiles.sh
-cd ~/
+if [ ! -f ~/Scripts/symlink_dotfiles.sh ]; then
+  chmod +x ~/Scripts/symlink_dotfiles.sh
+  cd ~/Scripts
+  ./symlink_dotfiles.sh
+  cd ~/
+else
+  echo "symlink_dotfiles.sh not found, skipping."
+fi
+
+# Downloading wallpapers
+mkdir -p ~/Pictures/wallpapers
+git clone https://github.com/tristengrant/wallpapers.git ~/Pictures/wallpapers
+
+# Download the latest Krita AppImage
+if [ -f ~/Scripts/update_krita.sh ]; then
+  chmod +x ~/Scripts/update_krita.sh
+  cd ~/Scripts
+  ./update_krita.sh
+  cd ~/
+else
+  echo "update_krita.sh not found, skipping."
+fi
+
+# Music folder
+echo "Mounting the media server's music folder..."
+MOUNT_DIR="/home/tristen/Music"
+FSTAB_ENTRY="192.168.2.221:/storage1/music $MOUNT_DIR nfs defaults,noatime 0 0"
+
+# Create mount point if it doesn’t exist
+[ -d "$MOUNT_DIR" ] || mkdir -p "$MOUNT_DIR"
+
+# Add entry to fstab if not already present
+if ! grep -qF "$FSTAB_ENTRY" /etc/fstab; then
+  echo "$FSTAB_ENTRY" | sudo tee -a /etc/fstab
+fi
+
+# Mount all filesystems from fstab
+sudo mount -a
 
 # Finishing up
 echo "Installation complete. Reboot your system to apply all changes."

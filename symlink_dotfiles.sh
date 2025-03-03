@@ -18,3 +18,6 @@ ln -sf ~/Github/dotfiles/config/QtProject.conf ~/.config
 ln -sf ~/Github/dotfiles/config/qt5ct ~/.config
 ln -sf ~/Github/dotfiles/config/Kvantum ~/.config
 ln -sf ~/Github/dotfiles/config/nvim ~/.config
+ln -sf ~/Github/dotfiles/mpd ~/.config
+ln -sf ~/Github/dotfiles/ncmpcpp ~/.config
+ln -sf ~/Github/dotfiles/xfce4 ~/.config
