@@ -53,6 +53,7 @@ EOF
 
 # List of packages to install from the official repositories
 PACKAGES=(
+  sddm
   networkmanager
   network-manager-applet
   reflector
@@ -271,8 +272,26 @@ sudo systemctl enable --now NetworkManager
 sudo systemctl enable --now cups
 
 # Enable MPD service
-systemctl --user enable mpd
-systemctl --user start mpd
+echo "Enabling the MPD service..."
+sudo systemctl --user enable mpd
+sudo systemctl --user start mpd
+
+# Enable SDDM
+echo "Enabling SDDM Login Manager..."
+sudo systemctl enable sddm
+
+# Create DWM .desktop file for SDDM
+echo "Making .desktopfile for DWM..."
+echo "exec dwm" >~/.xsession
+chmod +x ~/.xsession
+sudo mkdir -p /usr/share/xsessions
+sudo tee /usr/share/xsessions/dwm.desktop >/dev/null <<EOF
+[Desktop Entry]
+Name=DWM
+Comment=Dynamic Window Manager
+Exec=/usr/local/bin/dwm
+Type=Application
+EOF
 
 # Install Flatpak applications
 echo "Installing Flatpak applications..."
@@ -296,10 +315,12 @@ fi
 
 # Symlinking dotfiles
 if [ ! -f ~/Scripts/symlink_dotfiles.sh ]; then
+  echo "Symlinking dotfiles..."
   chmod +x ~/Scripts/symlink_dotfiles.sh
   cd ~/Scripts
   ./symlink_dotfiles.sh
   cd ~/
+  chmod +x ~/.xsession
 else
   echo "symlink_dotfiles.sh not found, skipping."
 fi

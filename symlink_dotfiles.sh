@@ -8,6 +8,7 @@ ln -sf ~/Github/dotfiles/Xresources ~/.Xresources
 ln -sf ~/Github/dotfiles/gtkrc-2.0 ~/.gtkrc-2.0
 ln -sf ~/Github/dotfiles/profile ~/.profile
 ln -sf ~/Github/dotfiles/gitconfig ~/.gitconfig
+ln -sf ~/Github/dotfiles/xsession ~/.xsession
 
 # In the home/.config
 ln -sf ~/Github/dotfiles/fontconfig ~/.config
