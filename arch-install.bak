@@ -141,7 +141,7 @@ PACKAGES=(
   kvantum
   polkit-gnome
   clipmenu
-  satty
+  flameshot
   sxiv
   ranger
   ueberzug
@@ -227,6 +227,7 @@ AUR_PACKAGES=(
   tiger
   chkrootkit
   xremap-x11-bin
+  caffeine-ng
 )
 
 # Install official packages

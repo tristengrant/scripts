@@ -122,7 +122,7 @@ PACKAGES=(
   kvantum
   polkit-gnome
   clipmenu
-  satty
+  flameshot
   sxiv
   ranger
   ueberzug
@@ -208,6 +208,7 @@ AUR_PACKAGES=(
   tiger
   chkrootkit
   xremap-x11-bin
+  caffeine-ng
 )
 # Install packages
 sudo pacman -S --needed --noconfirm "${PACKAGES[@]}"
@@ -243,6 +244,8 @@ flatpak install -y flathub net.displaycal.DisplayCAL
 # Clone dotfiles repo
 DOTFILES_DIR=~/Scripts/dotfiles
 [ ! -d "$DOTFILES_DIR" ] && git clone https://github.com/tristengrant/dotfiles.git "$DOTFILES_DIR"
+
+chmod +x ~/Github/dotfiles/xprofile ~/Github/dotfiles/xsession ~/Github/dotfiles/xinitrc
 
 # Symlink dotfiles
 SYMLINK_SCRIPT=~/Scripts/symlink_dotfiles.sh

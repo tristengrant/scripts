@@ -24,3 +24,4 @@ ln -sf ~/Github/dotfiles/ncmpcpp ~/.config
 ln -sf ~/Github/dotfiles/xfce4 ~/.config
 ln -sf ~/Github/dotfiles/xed ~/.config
 ln -sf ~/Github/dotfiles/enchant ~/.config
+ln -sf ~/Github/dotfiles/sxhkd ~/.config

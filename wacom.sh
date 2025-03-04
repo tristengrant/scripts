@@ -25,12 +25,12 @@ xsetwacom set "$STYLUS" Rotate "half"
 
 # Pen Buttons
 xsetwacom set "$STYLUS" Button 1 "" # Pen tip LEAVE ALONE
-xsetwacom set "$STYLUS" Button 2 "button 3"
+xsetwacom set "$STYLUS" Button 2 "key control"
 xsetwacom set "$STYLUS" Button 3 "button 3" # Color/Brush Selector
 
 # Tablet Buttons
-xsetwacom set "$PAD" Button 1 "button 3" #
-
+xsetwacom set "$PAD" Button 1 "key shift"     # Color Popup
+xsetwacom set "$PAD" Button 4 "key control z" # Middle Click
 # Adjust pressure curve
 xsetwacom set "$STYLUS" PressureCurve 0 50 100 100
 
