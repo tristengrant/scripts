@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cpu_usage=$(top -bn1 | awk '/^%Cpu/{print int($2+0.99)}')
+printf "CPU %d%% ¦ \n" "$cpu_usage"

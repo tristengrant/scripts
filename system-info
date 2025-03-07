@@ -1,0 +1,91 @@
+#!/bin/bash
+
+# Define color codes
+TITLE_COLOR="\e[94m" # Light Blue
+RESET_COLOR="\e[0m"
+
+# Function to get OS and Kernel info
+os_info() {
+    os=$(grep '^PRETTY_NAME=' /etc/os-release | cut -d= -f2 | tr -d '"')
+    kernel=$(uname -r)
+    echo -e "${TITLE_COLOR}OS:${RESET_COLOR} $os"
+    echo -e "${TITLE_COLOR}Kernel:${RESET_COLOR} $kernel"
+}
+
+# Function to get package count
+package_info() {
+    pacman_count=$(pacman -Qq | wc -l)
+    flatpak_count=$(flatpak list --app 2>/dev/null | wc -l)
+    echo -e "${TITLE_COLOR}Packages:${RESET_COLOR} $pacman_count (pacman), $flatpak_count (flatpak)"
+}
+
+# Function to get disk info
+disk_info() {
+    mount_point=$1
+    info=$(df -h --output=used,size,fstype,target | grep " $mount_point$")
+    if [ -n "$info" ]; then
+        used=$(echo "$info" | awk '{print $1}')
+        max=$(echo "$info" | awk '{print $2}')
+        fs_type=$(echo "$info" | awk '{print $3}')
+        echo -e "${TITLE_COLOR}Disk ($mount_point):${RESET_COLOR} $used/$max - $fs_type"
+    else
+        echo -e "${TITLE_COLOR}Disk ($mount_point):${RESET_COLOR} Not found"
+    fi
+}
+
+# Function to get CPU info
+cpu_info() {
+    cpu_name=$(grep "model name" /proc/cpuinfo | head -1 | cut -d: -f2 | sed 's/^ *//')
+    cpu_usage=$(grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {print int(usage) "%"}')
+    echo -e "${TITLE_COLOR}CPU:${RESET_COLOR} $cpu_name ($cpu_usage)"
+}
+
+# Function to get GPU info
+gpu_info() {
+    gpu_name="AMD Radeon RX 7600XT"
+    echo -e "${TITLE_COLOR}GPU:${RESET_COLOR} $gpu_name"
+}
+
+# Function to get RAM info
+ram_info() {
+    ram_total=$(free -h --giga | awk '/^Mem:/ {print $2}')
+    ram_used=$(free -h --giga | awk '/^Mem:/ {print $3}')
+    echo -e "${TITLE_COLOR}RAM:${RESET_COLOR} $ram_used/$ram_total"
+}
+
+# Function to display old monitor ASCII logo
+ascii_logo() {
+    cat << 'EOF'
+
+
+      .----------------.
+      | .------------. |
+      | |            | |
+      | |  SYSTEM    | |
+      | |  INFO      | |
+      | |  DISPLAY   | |
+      | |            | |
+      | '------------' |
+      |      __       |
+      |     |__|      |
+      '----------------'
+
+EOF
+}
+
+# Output
+if [[ "$1" != "--no-clear" ]]; then
+    clear
+fi
+
+ascii_logo
+echo "----"
+os_info
+package_info
+disk_info "/" "Root"
+disk_info "/ssd" "SSD"
+cpu_info
+gpu_info
+ram_info
+echo "----"
+echo ""

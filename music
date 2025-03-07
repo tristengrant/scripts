@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# Ensure there's a small delay before running the script
+sleep 1
+
+filter() {
+    status=$(timeout 1 mpc status 2>/dev/null)
+    [ -z "$status" ] && exit 0  # Exit if MPD is unresponsive
+
+    MAX_LENGTH=43  # Adjust based on your dwmblocks width
+
+    # Exit if MPD is not running or stopped
+    echo "$status" | grep -Eq "\[playing\]|\[paused\]" || exit 0
+
+    # Check if MPD is paused and set the icon
+    icon=""
+    echo "$status" | grep -q "\[paused\]" && icon=" ⏸"  # Space before pause icon
+
+    # Get the full song info without extra MPD lines
+    song=$(mpc --format "%artist% - %title%" | head -n1 | tr -d '\n')
+
+    # Ensure song is not empty
+    [ -z "$song" ] && exit 0
+
+    # Compute max allowed length including " ¦ " (3 characters)
+    max_song_length=$((MAX_LENGTH - ${#icon} - 3))
+
+    # Check if truncation is needed
+    if [ ${#song} -gt $max_song_length ]; then
+        song="${song:0:$((max_song_length-3))}..."
+    fi
+
+    # Format output and ensure " ¦ " is always at the end
+    printf "%s %s ¦\n" "$icon" "$song"
+}
+
+# Ensure the music daemon is running in the background
+pidof -x sb-mpdup >/dev/null 2>&1 || sb-mpdup >/dev/null 2>&1 &
+
+# Run the filter function in the background to avoid blocking
+filter &

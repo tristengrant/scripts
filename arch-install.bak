@@ -54,10 +54,15 @@ EOF
 # List of packages to install from the official repositories
 PACKAGES=(
   sddm
+  qt5-quickcontrols
+  qt5-quickcontrols2
+  qt5-graphicaleffects
+  qt5-svg
   networkmanager
   network-manager-applet
   reflector
   wget
+  cronie
   git
   openssh
   tmux
@@ -259,6 +264,9 @@ fi
 echo "Enabling NetworkManager and CUPS..."
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable --now cups
+
+# Enable Cronie
+sudo systemctl enable --now cronie
 
 # Enable MPD service
 echo "Enabling the MPD service..."

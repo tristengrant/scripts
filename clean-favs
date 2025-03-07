@@ -1,0 +1,22 @@
+#!/bin/bash
+
+PLAYLIST="Favourites"
+TMP_PLAYLIST="/tmp/${PLAYLIST}_clean.m3u"
+
+# Extract the playlist, remove duplicates, and save it to a temp file
+mpc listplaylist "$PLAYLIST" | awk '!seen[$0]++' > "$TMP_PLAYLIST"
+
+# Remove the old playlist from MPD
+mpc rm "$PLAYLIST"
+
+# Create a new playlist with the cleaned version
+mpc load "$TMP_PLAYLIST"
+mpc save "$PLAYLIST"
+
+# Remove the temporary file
+rm "$TMP_PLAYLIST"
+
+echo "Duplicates removed from playlist: $PLAYLIST"
+
+# Log the cleanup time
+echo "$(date): Cleaned Favourites playlist" >> ~/Scripts/clean-favs.log

@@ -35,10 +35,15 @@ EOF
 # List of packages to install from the official repositories
 PACKAGES=(
   sddm
+  qt5-quickcontrols
+  qt5-graphicaleffects
+  qt5-svg
+  qt5-quickcontrols2
   networkmanager
   network-manager-applet
   reflector
   wget
+  cronie
   git
   openssh
   tmux
@@ -154,7 +159,6 @@ PACKAGES=(
   gvfs-smb
   smbclient
   cifs-utils
-  firefox
   obsidian
   darktable
   reaper
@@ -200,6 +204,7 @@ AUR_PACKAGES=(
   z.lua
   fzf-extras
   fzf-tab-git
+  brave-bin
   gruvbox-material-gtk-theme-git
   gruvbox-material-icon-theme-git
   xcursor-simp1e-gruvbox-dark
@@ -208,7 +213,6 @@ AUR_PACKAGES=(
   tiger
   chkrootkit
   xremap-x11-bin
-  caffeine-ng
 )
 # Install packages
 sudo pacman -S --needed --noconfirm "${PACKAGES[@]}"
@@ -223,7 +227,7 @@ done
 [ -d ~/Scripts ] && chmod +x ~/Scripts/*
 
 # Enable services
-sudo systemctl enable --now NetworkManager cups sddm
+sudo systemctl enable --now NetworkManager cups sddm cronie
 systemctl --user enable --now mpd
 
 # Create DWM .desktop file
