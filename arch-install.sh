@@ -108,7 +108,6 @@ PACKAGES=(
   hugo
   sassc
   go
-  nodejs
   bottom
   pnpm
   haskell-pandoc
@@ -116,7 +115,6 @@ PACKAGES=(
   xf86-input-wacom
   neovim
   tree-sitter
-  kitty
   xed
   dunst
   feh
@@ -128,10 +126,8 @@ PACKAGES=(
   polkit-gnome
   clipmenu
   flameshot
-  sxiv
-  w3m
-  ranger
-  ueberzug
+  nsxiv
+  nnn
   xdg-utils
   xdg-user-dirs
   xdg-desktop-portal-gtk
@@ -205,14 +201,12 @@ AUR_PACKAGES=(
   z.lua
   fzf-extras
   fzf-tab-git
-  brave-bin
+  zen-browser-bin
   gruvbox-material-gtk-theme-git
   gruvbox-material-icon-theme-git
   xcursor-simp1e-gruvbox-dark
   kimageformats
   flatseal
-  tiger
-  chkrootkit
   xremap-x11-bin
 )
 # Install packages
@@ -228,10 +222,10 @@ done
 [ -d ~/Scripts ] && chmod +x ~/Scripts/*
 
 # Enable services
-sudo systemctl enable --now NetworkManager cups sddm cronie
-systemctl --user enable --now mpd
+sudo systemctl enable --now NetworkManager cups cronie
 
 # Create DWM .desktop file
+sudo mkdir -p /usr/share/xsessions
 sudo tee /usr/share/xsessions/dwm.desktop >/dev/null <<EOF
 [Desktop Entry]
 Name=DWM
