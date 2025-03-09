@@ -261,14 +261,13 @@ sudo mount -a
 # Get suckless software
 cd ~/Github
 git clone https://github.com/tristengrant/suckless.git
-cd ~/Github/suckless/dwm && make install
-cd ~/Github/suckless/dwmblocks-async && make install
-cd ~/github/suckless/dmenu && make install
-cd ~/Github/suckless/st && make install
+cd ~/Github/suckless/dwm && sudo make install
+cd ~/Github/suckless/dwmblocks-async && sudo make install
+cd ~/github/suckless/dmenu && sudo make install
+cd ~/Github/suckless/st && sudo make install
 
 # Update Krita
-KRITA_SCRIPT=~/Scripts/update_krita.sh
-[ -f "$KRITA_SCRIPT" ] && chmod +x "$KRITA_SCRIPT" && "$KRITA_SCRIPT"
+cd ~/Scripts && ./update_krita.sh
 
 # Enabling SDDM
 systemctl enable sddm.service
