@@ -3,7 +3,7 @@
 set -e # Exit on error
 
 # Define directories
-APP_DIR="$HOME/Applications"
+APP_DIR="/home/tristen/Applications"
 DESKTOP_DIR="$HOME/.local/share/applications"
 mkdir -p "$APP_DIR" "$DESKTOP_DIR"
 
@@ -49,6 +49,6 @@ xdg-desktop-menu forceupdate
 echo "Krita $LATEST_VERSION installed successfully!"
 echo "Run it with: $APPIMAGE_PATH or searching with your application menu."
 
-echo "Updating dmenu cache..."
-rm ~/.cache/dmenu_run
-SHELL=/bin/sh dmenu_run
+#echo "Updating dmenu cache..."
+#rm ~/.cache/dmenu_run
+#SHELL=/bin/sh dmenu_run
