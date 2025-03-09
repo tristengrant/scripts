@@ -1,29 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
-# Displays the current temperature (°C) for the statusbar.
+# Fetch weather data from wttr.in for your location
+LOCATION="Winnipeg"  # Change this to your city or leave empty for auto-detection
+TEMP=$(curl -s "wttr.in/$LOCATION?format=%t" | sed 's/+//g')
 
-weatherreport="${XDG_CACHE_HOME:-$HOME/.cache}/weatherreport"
-
-# Fetch the temperature for Winnipeg and overwrite cache.
-getforecast() { 
-    rm -f "$weatherreport"  # Clear old cache before fetching new data
-    timeout --signal=1 2s curl -sf "wttr.in/Winnipeg?format=%t" > "$weatherreport" || exit 1
-    sed -i 's/[^-+0-9°C]//g' "$weatherreport"  # Ensure only temperature is stored
-}
-
-# Ensure the forecast updates at least once a day.
-checkforecast() {
-	[ -s "$weatherreport" ] && [ "$(stat -c %y "$weatherreport" | cut -d' ' -f1)" = "$(date '+%Y-%m-%d')" ]
-}
-
-getcurrenttemp() {
-	# Read the cached temperature and ensure it ends with " | "
-	cat "$weatherreport" | sed 's/$/ ¦ /'
-}
-
-showweather() {
-	checkforecast || getforecast
-	printf "%s\n" "$(getcurrenttemp)"
-}
-
-showweather
+# Display temperature with space at the beginning and " ¦ " at the end
+echo " $TEMP ¦ "

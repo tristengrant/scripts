@@ -129,6 +129,7 @@ PACKAGES=(
   clipmenu
   flameshot
   sxiv
+  w3m
   ranger
   ueberzug
   xdg-utils
