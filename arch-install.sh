@@ -251,10 +251,6 @@ cd ~/Scripts && ./symlink_dotfiles.sh
 WALLPAPER_DIR=~/Pictures/wallpapers
 [ ! -d "$WALLPAPER_DIR" ] && git clone https://github.com/tristengrant/wallpapers.git "$WALLPAPER_DIR"
 
-# Update Krita
-KRITA_SCRIPT=~/Scripts/update_krita.sh
-[ -f "$KRITA_SCRIPT" ] && chmod +x "$KRITA_SCRIPT" && "$KRITA_SCRIPT"
-
 # Mount music folder
 MOUNT_DIR="$HOME/Music"
 FSTAB_ENTRY="192.168.2.221:/storage1/music $MOUNT_DIR nfs defaults,noatime 0 0"
@@ -269,5 +265,12 @@ cd ~/Github/suckless/dwm && make install
 cd ~/Github/suckless/dwmblocks-async && make install
 cd ~/github/suckless/dmenu && make install
 cd ~/Github/suckless/st && make install
+
+# Update Krita
+KRITA_SCRIPT=~/Scripts/update_krita.sh
+[ -f "$KRITA_SCRIPT" ] && chmod +x "$KRITA_SCRIPT" && "$KRITA_SCRIPT"
+
+# Enabling SDDM
+systemctl enable sddm.service
 
 echo "Installation complete. Reboot to apply all changes."
