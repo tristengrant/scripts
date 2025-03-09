@@ -19,7 +19,7 @@ if ! command -v paru &>/dev/null; then
 fi
 
 # Create necessary directories
-mkdir -p ~/Applications ~/Github ~/Documents ~/Music ~/Pictures/screenshots ~/Videos
+mkdir -p ~/Applications ~/Github/dotfiles ~/Documents ~/Music ~/Pictures/screenshots ~/Videos
 
 # Set up AMD GPU config
 sudo tee /etc/X11/xorg.conf.d/20-amdgpu.conf >/dev/null <<EOF
@@ -264,5 +264,13 @@ FSTAB_ENTRY="192.168.2.221:/storage1/music $MOUNT_DIR nfs defaults,noatime 0 0"
 [ ! -d "$MOUNT_DIR" ] && mkdir -p "$MOUNT_DIR"
 grep -qF "$FSTAB_ENTRY" /etc/fstab || echo "$FSTAB_ENTRY" | sudo tee -a /etc/fstab
 sudo mount -a
+
+# Get suckless software
+cd ~/Github
+git clone https://github.com/tristengrant/suckless.git
+cd ~/Github/suckless/dwm && make clean && make clean install
+cd ~/Github/suckless/dwmblocks-async && make clean && make clean install
+cd ~/github/suckless/dmenu && make clean && make clean install
+cd ~/Github/suckless/st && make clean && make clean install
 
 echo "Installation complete. Reboot to apply all changes."
