@@ -19,7 +19,7 @@ if ! command -v paru &>/dev/null; then
 fi
 
 # Create necessary directories
-mkdir -p ~/Applications ~/Github/dotfiles ~/Documents ~/Music ~/Pictures/screenshots ~/Videos
+mkdir -p ~/Applications ~/Github ~/Documents ~/Music ~/Pictures/screenshots ~/Videos
 
 # Set up AMD GPU config
 sudo tee /etc/X11/xorg.conf.d/20-amdgpu.conf >/dev/null <<EOF
@@ -241,14 +241,11 @@ fi
 flatpak install -y flathub net.displaycal.DisplayCAL
 
 # Clone dotfiles repo
-DOTFILES_DIR=~/Scripts/dotfiles
-[ ! -d "$DOTFILES_DIR" ] && git clone https://github.com/tristengrant/dotfiles.git "$DOTFILES_DIR"
-
-chmod +x ~/Github/dotfiles/xprofile ~/Github/dotfiles/xsession ~/Github/dotfiles/xinitrc
+cd ~/Github && git clone https://github.com/tristengrant/dotfiles.git
+chmod +x ~/Github/dotfiles/xprofile ~/Github/dotfiles/xsession
 
 # Symlink dotfiles
-SYMLINK_SCRIPT=~/Scripts/symlink_dotfiles.sh
-[ -f "$SYMLINK_SCRIPT" ] && chmod +x "$SYMLINK_SCRIPT" && "$SYMLINK_SCRIPT"
+cd ~/Scripts && ./symlink_dotfiles.sh
 
 # Download wallpapers
 WALLPAPER_DIR=~/Pictures/wallpapers
