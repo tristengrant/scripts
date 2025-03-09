@@ -265,9 +265,9 @@ sudo mount -a
 # Get suckless software
 cd ~/Github
 git clone https://github.com/tristengrant/suckless.git
-cd ~/Github/suckless/dwm && make clean && make clean install
-cd ~/Github/suckless/dwmblocks-async && make clean && make clean install
-cd ~/github/suckless/dmenu && make clean && make clean install
-cd ~/Github/suckless/st && make clean && make clean install
+cd ~/Github/suckless/dwm && make install
+cd ~/Github/suckless/dwmblocks-async && make install
+cd ~/github/suckless/dmenu && make install
+cd ~/Github/suckless/st && make install
 
 echo "Installation complete. Reboot to apply all changes."
