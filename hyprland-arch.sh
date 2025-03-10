@@ -34,11 +34,17 @@ paru -S --noconfirm \
   bitwarden-bin \
   fzf-extras \
   zen-browser-bin \
-  gruvbox-dark-gtk
+  gruvbox-dark-gtk \
+  tofi
 
 # Install other packages from the repo
 echo "Installing other packages..."
 pacman -S --noconfirm \
+  grim \
+  slurp \
+  qt5-wayland \
+  qt5-wayland \
+  xdg-desktop-portal-hyprland \
   ly \
   reflector \
   wget \
@@ -55,7 +61,6 @@ pacman -S --noconfirm \
   nwg-displays \
   hyprland-qtutils \
   waybar \
-  tofi \
   openssh \
   kitty \
   tmux \
