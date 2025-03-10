@@ -33,6 +33,7 @@ echo,,linux
 ) | sfdisk /dev/nvme0n1
 
 # Swap setup (use zram)
+SWAP_PARTITION="/dev/zram0"
 mkswap "$SWAP_PARTITION"
 swapon "$SWAP_PARTITION"
 
@@ -78,7 +79,6 @@ mkdir /mnt/ssd
 mount /dev/sda1 /mnt/ssd
 
 # Set up the EFI partition
-mkfs.fat -F32 /dev/nvme0n1p1
 mount /dev/nvme0n1p1 /mnt/boot
 
 # Install base system
@@ -141,21 +141,26 @@ systemctl enable NetworkManager
 # Install paru if not installed
 if ! command -v paru &>/dev/null; then
   echo "Installing paru..."
-  
+
   # Install necessary dependencies for building paru
-  sudo pacman -S --needed --noconfirm git base-devel xf86-video-amdgpu
+  pacman -S --needed --noconfirm git base-devel xf86-video-amdgpu
   
   # Clone the paru repository and build it
   if [ ! -d ~/paru-bin ]; then
     git clone https://aur.archlinux.org/paru-bin.git ~/paru-bin
   fi
 
-  pushd ~/paru-bin
+  cd ~/paru-bin
   makepkg -si --noconfirm
-  popd
   
   # Clean up the build directory after installation
   rm -rf ~/paru-bin
+  
+  # Check if paru was successfully installed
+  if ! command -v paru &>/dev/null; then
+    echo "paru installation failed, aborting AUR package installation."
+    exit 1
+  fi
 else
   echo "Paru is already installed."
 fi
@@ -360,14 +365,15 @@ git clone https://github.com/tristengrant/tristengrant.git readme
 cd ~
 
 # Make sure your user owns the directories
-chown -R tristen:tristen /home/tristen/Documents
-chown -R tristen:tristen /home/tristen/Downloads
-chown -R tristen:tristen /home/tristen/Pictures
-chown -R tristen:tristen /home/tristen/Videos
-chown -R tristen:tristen /home/tristen/Music
-chown -R tristen:tristen /home/tristen/Templates
-chown -R tristen:tristen /home/tristen/Github
-chown -R tristen:tristen /home/tristen/Applications
+# Check and change ownership for each directory
+for dir in /home/tristen/Documents /home/tristen/Downloads /home/tristen/Pictures /home/tristen/Videos /home/tristen/Music /home/tristen/Templates /home/tristen/Github /home/tristen/Applications; do
+  if [ -d "$dir" ]; then
+    echo "Directory $dir exists, changing ownership..."
+    chown -R tristen:tristen "$dir"
+  else
+    echo "Directory $dir does not exist, skipping..."
+  fi
+done
 
 # Mount music folder
 MOUNT_DIR="$HOME/Music"
@@ -441,7 +447,7 @@ xdg-desktop-menu forceupdate
 echo "Krita $LATEST_VERSION installed successfully!"
 echo "Run it with: $APPIMAGE_PATH or searching with your application menu."
 
-# Enable Ly Login Manager
+# Enable Ly Login Manager without starting it
 systemctl enable ly.service
 
 # Reboot
