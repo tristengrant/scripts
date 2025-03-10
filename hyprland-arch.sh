@@ -40,8 +40,6 @@ paru -S --noconfirm \
 # Install other packages from the repo
 echo "Installing other packages..."
 pacman -S --noconfirm \
-  grim \
-  slurp \
   qt5-wayland \
   qt5-wayland \
   xdg-desktop-portal-hyprland \
