@@ -34,7 +34,7 @@ EOF
 
 # List of packages to install from the official repositories
 PACKAGES=(
-  sddm
+  ly
   qt5-quickcontrols
   qt5-graphicaleffects
   qt5-svg
@@ -44,7 +44,6 @@ PACKAGES=(
   reflector
   wget
   cronie
-  git
   openssh
   tmux
   p7zip
@@ -52,7 +51,6 @@ PACKAGES=(
   lrzip
   trash-cli
   udiskie
-  xorg-server
   xorg-xinit
   xorg-xrandr
   xorg-xsetroot
@@ -74,9 +72,7 @@ PACKAGES=(
   wireplumber
   helvum
   pamixer
-  pavucontrol
   alsa-utils
-  alsa-plugins
   realtime-privileges
   rtirq
   cups
@@ -102,14 +98,11 @@ PACKAGES=(
   lazygit
   vale
   direnv
-  starship
   lua
   lua-language-server
   hugo
-  sassc
   go
   bottom
-  pnpm
   haskell-pandoc
   libwacom
   xf86-input-wacom
@@ -168,6 +161,7 @@ PACKAGES=(
   cyme
   ttf-jetbrains-mono
   ttf-nerd-fonts-symbols
+  ttf-font-awesome
   noto-fonts-emoji
   noise-suppression-for-voice
   pdfgrep
@@ -180,7 +174,6 @@ PACKAGES=(
   libappimage
   swh-plugins
   lsp-plugins
-  gcolor3
   zathura
   hunspell
   hunspell-en_ca
@@ -244,9 +237,6 @@ flatpak install -y flathub net.displaycal.DisplayCAL
 cd ~/Github && git clone https://github.com/tristengrant/dotfiles.git
 chmod +x ~/Github/dotfiles/xprofile ~/Github/dotfiles/xsession
 
-# Symlink dotfiles
-cd ~/Scripts && ./symlink_dotfiles.sh
-
 # Download wallpapers
 WALLPAPER_DIR=~/Pictures/wallpapers
 [ ! -d "$WALLPAPER_DIR" ] && git clone https://github.com/tristengrant/wallpapers.git "$WALLPAPER_DIR"
@@ -270,6 +260,6 @@ cd ~/Github/suckless/st && sudo make install
 cd ~/Scripts && ./update_krita.sh
 
 # Enabling SDDM
-systemctl enable sddm.service
+systemctl enable ly.service
 
 echo "Installation complete. Reboot to apply all changes."
