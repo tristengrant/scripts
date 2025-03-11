@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# Source the dmenu configuration file
-#. ~/Scripts/dmenu-config.sh
-
 #choice=$(echo -e "Shutdown\nReboot\nLogout" | "${DMENU_CMD[@]}" -p "Power Options:")
 choice=$(echo -e "Shutdown\nReboot\nLogout" | dmenu -p "Power Options:")
 
