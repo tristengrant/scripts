@@ -24,15 +24,30 @@ xsetwacom set "$TOUCH" Touch "off"
 xsetwacom set "$STYLUS" Rotate "half"
 
 # Pen Buttons
-xsetwacom set "$STYLUS" Button 1 "" # Pen tip LEAVE ALONE
-xsetwacom set "$STYLUS" Button 2 "key control"
-xsetwacom set "$STYLUS" Button 3 "button 3" # Color/Brush Selector
+xsetwacom set "$STYLUS" Button 2 "key control" #Sample colour
+xsetwacom set "$STYLUS" Button 3 "button +2" #Middle click
 
 # Tablet Buttons
-xsetwacom set "$PAD" Button 1 "key shift"     # Color Popup
-xsetwacom set "$PAD" Button 4 "key control z" # Middle Click
-# Adjust pressure curve
-xsetwacom set "$STYLUS" PressureCurve 0 50 100 100
+xsetwacom set "$PAD" Button 13 "key e" #Eraser Tool
+xsetwacom set "$PAD" Button 12 "key b" #Brush Tool
+xsetwacom set "$PAD" Button 11 "key ctrl alt shift s" #Freehand Selection
+xsetwacom set "$PAD" Button 10 "key ctrl alt shift r" #Reload Brush Preset
+xsetwacom set "$PAD" Button 1 "key shift o" #Color Popup (Circle button)
+xsetwacom set "$PAD" Button 9 "key shift" #Shift
+xsetwacom set "$PAD" Button 8 "key ctrl alt shift v" #Toggle layer visibility
+xsetwacom set "$PAD" Button 3 "key ctrl t" #Transform
+xsetwacom set "$PAD" Button 2 "key ctrl shift a" #Deselect
+
+# Set mode to relative (like a mouse) or absolute (like a pen)
+xsetwacom set "$STYLUS" Mode "Absolute"
+xsetwacom set "$CURSOR" Mode "Relative"
+
+# Sets if the stylus needs to touch the tablet for the pen's buttons to work
+xsetwacom set "$STYLUS" TabletPCButton "off"
+
+# Sets direction of the touch wheel
+xsetwacom set "$PAD" AbsWheelUp "key minus"
+xsetwacom set "$PAD" AbsWheelDown "key plus"
 
 # Print confirmation
 echo "Tablet settings applied for $TABLET_NAME"

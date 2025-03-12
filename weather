@@ -1,8 +1,30 @@
 #!/bin/bash
 
-# Fetch weather data from wttr.in for your location
-LOCATION="Winnipeg"  # Change this to your city or leave empty for auto-detection
-TEMP=$(curl -s "wttr.in/$LOCATION?format=%t" | sed 's/+//g')
+# Fetch temperature from wttr.in (Celsius)
+TEMP=$(curl -s --max-time 3 "wttr.in?format=%t&u")
+
+# If wttr.in fails, fallback to Open-Meteo
+if [[ -z "$TEMP" || "$TEMP" == *"Unknown location"* ]]; then
+    # Get coordinates using IP geolocation
+    LOCATION=$(curl -s --max-time 3 "https://ipinfo.io/loc")
+
+    # Extract latitude and longitude
+    LAT=$(echo "$LOCATION" | cut -d',' -f1)
+    LON=$(echo "$LOCATION" | cut -d',' -f2)
+
+    # Fetch temperature from Open-Meteo
+    TEMP=$(curl -s --max-time 3 "https://api.open-meteo.com/v1/forecast?latitude=$LAT&longitude=$LON&current=temperature_2m&temperature_unit=celsius" | jq -r '.current.temperature_2m' 2>/dev/null)
+
+    # Append °C
+    if [[ ! -z "$TEMP" ]]; then
+        TEMP="${TEMP}°C"
+    fi
+fi
+
+# Final fallback message if everything fails
+if [[ -z "$TEMP" ]]; then
+    TEMP="N/A"
+fi
 
 # Display temperature with space at the beginning and " ¦ " at the end
 echo " $TEMP ¦ "

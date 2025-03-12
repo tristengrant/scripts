@@ -6,6 +6,7 @@ ln -sf ~/Github/dotfiles/gtkrc-2.0 ~/.gtkrc-2.0
 ln -sf ~/Github/dotfiles/xprofile ~/.xprofile
 ln -sf ~/Github/dotfiles/xprofile ~/.xprofile
 ln -sf ~/Github/dotfiles/xsession ~/.xsession
+ln -sf ~/Github/dotfiles/nanorc ~/.nanorc
 
 # In the home/.config
 ln -sf ~/Github/dotfiles/fontconfig ~/.config
