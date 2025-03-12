@@ -1,3 +1,0 @@
-#!/bin/sh
-
-free --mebi | awk '/Mem:/ {printf "MEM %d%% ¦ ", $3/$2*100}'

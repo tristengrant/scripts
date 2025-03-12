@@ -1,5 +1,0 @@
-#!/bin/sh
-ROOT_USAGE=$(df -h / | awk 'NR==2 {print int(($3/$2)*100 + 0.5)}')
-SSD_USAGE=$(df -h /ssd | awk 'NR==2 {print int(($3/$2)*100 + 0.5)}')
-
-echo " HD ${ROOT_USAGE}% ¦ SSD ${SSD_USAGE}% ¦ "

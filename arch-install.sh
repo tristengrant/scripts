@@ -42,6 +42,7 @@ PACKAGES=(
   networkmanager
   network-manager-applet
   reflector
+  fastfetch
   wget
   cronie
   openssh

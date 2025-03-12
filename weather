@@ -1,30 +1,31 @@
 #!/bin/bash
 
-# Fetch temperature from wttr.in (Celsius)
-TEMP=$(curl -s --max-time 3 "wttr.in?format=%t&u")
+# Get coordinates using IP geolocation
+LOCATION=$(curl -s --max-time 3 "https://ipinfo.io/loc")
 
-# If wttr.in fails, fallback to Open-Meteo
-if [[ -z "$TEMP" || "$TEMP" == *"Unknown location"* ]]; then
-    # Get coordinates using IP geolocation
-    LOCATION=$(curl -s --max-time 3 "https://ipinfo.io/loc")
+# Extract latitude and longitude
+LAT=$(echo "$LOCATION" | cut -d',' -f1)
+LON=$(echo "$LOCATION" | cut -d',' -f2)
 
-    # Extract latitude and longitude
-    LAT=$(echo "$LOCATION" | cut -d',' -f1)
-    LON=$(echo "$LOCATION" | cut -d',' -f2)
+# Fetch real-time weather from Open-Meteo
+WEATHER_JSON=$(curl -s --max-time 3 "https://api.open-meteo.com/v1/forecast?latitude=$LAT&longitude=$LON&current_weather=true&temperature_unit=celsius")
 
-    # Fetch temperature from Open-Meteo
-    TEMP=$(curl -s --max-time 3 "https://api.open-meteo.com/v1/forecast?latitude=$LAT&longitude=$LON&current=temperature_2m&temperature_unit=celsius" | jq -r '.current.temperature_2m' 2>/dev/null)
+# Extract and round temperature
+TEMP=$(echo "$WEATHER_JSON" | jq -r '.current_weather.temperature' 2>/dev/null | awk '{print int($1+0.5)}')
 
-    # Append °C
-    if [[ ! -z "$TEMP" ]]; then
+# If Open-Meteo fails, fallback to wttr.in
+if [[ -z "$TEMP" || "$TEMP" == "null" ]]; then
+    TEMP=$(curl -s --max-time 3 "wttr.in/?format=%t&u" | sed 's/F$/C/' | tr -dc '0-9')
+    
+    # Ensure fallback value is valid
+    if [[ -z "$TEMP" ]]; then
+        TEMP="N/A"
+    else
         TEMP="${TEMP}°C"
     fi
-fi
-
-# Final fallback message if everything fails
-if [[ -z "$TEMP" ]]; then
-    TEMP="N/A"
+else
+    TEMP="${TEMP}°C"
 fi
 
 # Display temperature with space at the beginning and " ¦ " at the end
-echo " $TEMP ¦ "
+echo "$TEMP"
