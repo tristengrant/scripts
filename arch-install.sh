@@ -46,7 +46,6 @@ PACKAGES=(
   wget
   cronie
   openssh
-  tmux
   p7zip
   unrar
   lrzip
@@ -71,8 +70,7 @@ PACKAGES=(
   pipewire-pulse
   pipewire-jack
   wireplumber
-  helvum
-  pamixer
+  qpwgraph
   alsa-utils
   realtime-privileges
   rtirq
@@ -80,7 +78,6 @@ PACKAGES=(
   nfs-utils
   system-config-printer
   glabels
-  bat
   lsd
   fzf
   ripgrep
@@ -96,7 +93,6 @@ PACKAGES=(
   nmap
   iperf3
   smartmontools
-  lazygit
   vale
   direnv
   lua
@@ -104,12 +100,11 @@ PACKAGES=(
   hugo
   go
   bottom
-  haskell-pandoc
   libwacom
   xf86-input-wacom
   neovim
   tree-sitter
-  xed
+  lite-xl
   dunst
   feh
   sxhkd
@@ -126,7 +121,6 @@ PACKAGES=(
   xdg-user-dirs
   xdg-desktop-portal-gtk
   brightnessctl
-  flatpak
   ffmpegthumbnailer
   tumbler
   file-roller
@@ -180,10 +174,8 @@ PACKAGES=(
   hunspell-en_ca
   enchant
   steam
-  zsh
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-  zsh-history-substring-search
+  firefox
+  chromium
 )
 
 # List of packages to install from the AUR
@@ -195,12 +187,10 @@ AUR_PACKAGES=(
   z.lua
   fzf-extras
   fzf-tab-git
-  zen-browser-bin
   gruvbox-material-gtk-theme-git
   gruvbox-material-icon-theme-git
   xcursor-simp1e-gruvbox-dark
   kimageformats
-  flatseal
   xremap-x11-bin
 )
 # Install packages
@@ -208,7 +198,7 @@ sudo pacman -S --needed --noconfirm "${PACKAGES[@]}"
 paru -S --needed --noconfirm "${AUR_PACKAGES[@]}"
 
 # Add user to groups
-for grp in tty realtime video audio input; do
+for grp in tty realtime video audio input lp plugdev; do
   sudo usermod -aG "$grp" "$USER"
 done
 
@@ -227,12 +217,6 @@ Comment=Dynamic Window Manager
 Exec=/usr/local/bin/dwm
 Type=Application
 EOF
-
-# Install Flatpak & DisplayCAL
-if ! command -v flatpak &>/dev/null; then
-  sudo pacman -S --noconfirm flatpak
-fi
-flatpak install -y flathub net.displaycal.DisplayCAL
 
 # Clone dotfiles repo
 cd ~/Github && git clone https://github.com/tristengrant/dotfiles.git
