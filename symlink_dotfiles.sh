@@ -7,6 +7,7 @@ ln -sf ~/Github/dotfiles/xprofile ~/.xprofile
 ln -sf ~/Github/dotfiles/xprofile ~/.xprofile
 ln -sf ~/Github/dotfiles/xsession ~/.xsession
 ln -sf ~/Github/dotfiles/nanorc ~/.nanorc
+ln -sf ~/Github/dotfiles/Xresources ~/.Xresources
 
 # In the home/.config
 ln -sf ~/Github/dotfiles/fontconfig ~/.config
@@ -22,3 +23,4 @@ ln -sf ~/Github/dotfiles/xed ~/.config
 ln -sf ~/Github/dotfiles/enchant ~/.config
 ln -sf ~/Github/dotfiles/sxhkd ~/.config
 ln -sf ~/Github/dotfiles/dunst ~/.config
+ln -sf ~/Github/dotfiles/mpv ~/.config
