@@ -157,6 +157,8 @@ PACKAGES=(
   cyme
   ttf-jetbrains-mono
   ttf-nerd-fonts-symbols
+  ttf-nerd-fonts-symbols-mono
+  ttf-noto-nerd
   ttf-font-awesome
   noto-fonts-emoji
   noise-suppression-for-voice
