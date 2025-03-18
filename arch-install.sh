@@ -19,7 +19,7 @@ if ! command -v paru &>/dev/null; then
 fi
 
 # Create necessary directories
-mkdir -p ~/Applications ~/Github ~/Documents ~/Music ~/Pictures/screenshots ~/Videos
+mkdir -p ~/Applications ~/Github ~/Documents ~/Music ~/Pictures/screenshots ~Pictures/wallpapers ~/Videos
 
 # Set up AMD GPU config
 sudo tee /etc/X11/xorg.conf.d/20-amdgpu.conf >/dev/null <<EOF
@@ -221,10 +221,6 @@ EOF
 # Clone dotfiles repo
 cd ~/Github && git clone https://github.com/tristengrant/dotfiles.git
 chmod +x ~/Github/dotfiles/xprofile ~/Github/dotfiles/xsession
-
-# Download wallpapers
-WALLPAPER_DIR=~/Pictures/wallpapers
-[ ! -d "$WALLPAPER_DIR" ] && git clone https://github.com/tristengrant/wallpapers.git "$WALLPAPER_DIR"
 
 # Mount music folder
 MOUNT_DIR="$HOME/Music"
