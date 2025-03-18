@@ -19,7 +19,7 @@ if ! command -v paru &>/dev/null; then
 fi
 
 # Create necessary directories
-mkdir -p ~/Applications ~/Github ~/Documents ~/Music ~/Pictures/screenshots ~Pictures/wallpapers ~/Videos
+mkdir -p ~/Applications ~/Github ~/Documents ~/Music ~/Pictures/screenshots ~/Pictures/wallpapers ~/Videos
 
 # Set up AMD GPU config
 sudo tee /etc/X11/xorg.conf.d/20-amdgpu.conf >/dev/null <<EOF
@@ -102,9 +102,10 @@ PACKAGES=(
   bottom
   libwacom
   xf86-input-wacom
+  nodejs
+  npm
   neovim
   tree-sitter
-  lite-xl
   dunst
   feh
   sxhkd
@@ -175,13 +176,13 @@ PACKAGES=(
   enchant
   steam
   firefox
-  chromium
 )
 
 # List of packages to install from the AUR
 AUR_PACKAGES=(
   vcvrack
   bitwarden-bin
+  brave-bin
   clipster
   xdg-ninja
   z.lua
@@ -198,12 +199,9 @@ sudo pacman -S --needed --noconfirm "${PACKAGES[@]}"
 paru -S --needed --noconfirm "${AUR_PACKAGES[@]}"
 
 # Add user to groups
-for grp in tty realtime video audio input lp plugdev; do
+for grp in tty realtime video audio input lp; do
   sudo usermod -aG "$grp" "$USER"
 done
-
-# Make scripts executable
-[ -d ~/Scripts ] && chmod +x ~/Scripts/*
 
 # Enable services
 sudo systemctl enable --now NetworkManager cups cronie
