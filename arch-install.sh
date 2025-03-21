@@ -40,7 +40,6 @@ PACKAGES=(
   qt5-svg
   qt5-quickcontrols2
   networkmanager
-  network-manager-applet
   reflector
   fastfetch
   wget
@@ -120,6 +119,7 @@ PACKAGES=(
   nnn
   xdg-utils
   xdg-user-dirs
+  xdg-desktop-portal
   xdg-desktop-portal-gtk
   brightnessctl
   ffmpegthumbnailer

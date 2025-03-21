@@ -15,7 +15,7 @@ ln -sf ~/Github/dotfiles/gtk-3.0 ~/.config
 ln -sf ~/Github/dotfiles/QtProject.conf ~/.config
 ln -sf ~/Github/dotfiles/qt5ct ~/.config
 ln -sf ~/Github/dotfiles/Kvantum ~/.config
-ln -sf ~/Github/dotfiles/nvim ~/.config
+#ln -sf ~/Github/dotfiles/nvim ~/.config
 ln -sf ~/Github/dotfiles/mpd ~/.config
 ln -sf ~/Github/dotfiles/ncmpcpp ~/.config
 ln -sf ~/Github/dotfiles/xfce4 ~/.config

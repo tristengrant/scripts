@@ -1,10 +1,14 @@
 #!/bin/bash
 
-PLAYLIST="Favourites"
+PLAYLIST="favourites"
 TMP_PLAYLIST="/tmp/${PLAYLIST}_clean.m3u"
+PLAYLIST_FILE="$HOME/Github/dotfiles/mpd/playlists/${PLAYLIST}.m3u"
 
-# Extract the playlist, remove duplicates, and save it to a temp file
-mpc listplaylist "$PLAYLIST" | awk '!seen[$0]++' > "$TMP_PLAYLIST"
+# Remove read-only attribute
+chmod u+w "$PLAYLIST_FILE"
+
+# Extract the playlist and detect duplicates
+mpc playlist "$PLAYLIST" | awk '{ if (seen[$0]++) print $0 > "/tmp/duplicates.log"; else print $0 }' >"$TMP_PLAYLIST"
 
 # Remove the old playlist from MPD
 mpc rm "$PLAYLIST"
@@ -13,10 +17,19 @@ mpc rm "$PLAYLIST"
 mpc load "$TMP_PLAYLIST"
 mpc save "$PLAYLIST"
 
+# Restore read-only attribute
+chmod u-w "$PLAYLIST_FILE"
+
 # Remove the temporary file
 rm "$TMP_PLAYLIST"
 
-echo "Duplicates removed from playlist: $PLAYLIST"
+# Log the cleanup time and duplicates removed
+if [ -s /tmp/duplicates.log ]; then
+  echo "$(date): Cleaned Favourites playlist. Duplicates removed:" >>$HOME/Github/scripts/clean-favs.log
+  cat /tmp/duplicates.log >>$HOME/Github/scripts/clean-favs.log
+  rm /tmp/duplicates.log
+else
+  echo "$(date): Cleaned Favourites playlist. No duplicates found." >>$HOME/Github/scripts/clean-favs.log
+fi
 
-# Log the cleanup time
-echo "$(date): Cleaned Favourites playlist" >> ~/Scripts/clean-favs.log
+echo "Duplicates removed from playlist: $PLAYLIST"
