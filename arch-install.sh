@@ -99,6 +99,7 @@ PACKAGES=(
   ffmpeg
   libheif
   libavif
+  sshfs
   mpv
   mpd
   mpc
@@ -172,13 +173,6 @@ EOF
 # Clone dotfiles repo
 cd ~/Github && git clone https://github.com/tristengrant/dotfiles.git
 chmod +x ~/Github/dotfiles/xprofile ~/Github/dotfiles/xsession
-
-# Mount music folder
-MOUNT_DIR="$HOME/Music"
-FSTAB_ENTRY="192.168.2.221:/storage1/music $MOUNT_DIR nfs defaults,noatime 0 0"
-[ ! -d "$MOUNT_DIR" ] && mkdir -p "$MOUNT_DIR"
-grep -qF "$FSTAB_ENTRY" /etc/fstab || echo "$FSTAB_ENTRY" | sudo tee -a /etc/fstab
-sudo mount -a
 
 # Get suckless software
 cd ~/Github
