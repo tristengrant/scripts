@@ -88,7 +88,6 @@ PACKAGES=(
   kvantum
   polkit-gnome
   clipmenu
-  clipster
   flameshot
   nsxiv
   xdg-utils
@@ -98,7 +97,6 @@ PACKAGES=(
   ffmpegthumbnailer
   tumbler
   ffmpeg
-  imagemagick
   libheif
   libavif
   mpv
@@ -131,19 +129,18 @@ PACKAGES=(
   noise-suppression-for-voice
   gparted
   xournalpp
-  lsp-plugins
+  lsp-plugins-clap
   zathura
   enchant
   steam
   firefox
   bitwarden
   zed
-  kimageformats
-  kimageformats5
 )
 
 # List of packages to install from the AUR
 AUR_PACKAGES=(
+	clipster
   vcvrack
   xdg-ninja
   gruvbox-material-gtk-theme-git
