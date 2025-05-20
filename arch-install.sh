@@ -7,16 +7,16 @@ if [[ $EUID -eq 0 ]]; then
   exit 1
 fi
 
-# Install paru if not installed
-if ! command -v paru &>/dev/null; then
-  echo "Installing paru..."
-  sudo pacman -S --needed --noconfirm git base-devel
-  git clone https://aur.archlinux.org/paru-bin.git ~/paru-bin
-  pushd ~/paru-bin
-  makepkg -si --noconfirm
-  popd
-  rm -rf ~/paru-bin
-fi
+# Install paru if not installed, commented out because I'm using EndeavourOS which installed yay by default
+#if ! command -v paru &>/dev/null; then
+#  echo "Installing paru..."
+#  sudo pacman -S --needed --noconfirm git base-devel
+#  git clone https://aur.archlinux.org/paru-bin.git ~/paru-bin
+#  pushd ~/paru-bin
+#  makepkg -si --noconfirm
+#  popd
+#  rm -rf ~/paru-bin
+#fi
 
 # Create necessary directories
 mkdir -p ~/Applications ~/Github ~/Documents ~/Music ~/Pictures/screenshots ~/Pictures/wallpapers ~/Videos
@@ -34,16 +34,11 @@ EOF
 
 # List of packages to install from the official repositories
 PACKAGES=(
-  ly
-  qt5-quickcontrols
-  qt5-graphicaleffects
-  qt5-svg
-  qt5-quickcontrols2
+  sddm
   networkmanager
   reflector
   fastfetch
   wget
-  cronie
   openssh
   p7zip
   unrar
@@ -77,34 +72,13 @@ PACKAGES=(
   nfs-utils
   system-config-printer
   glabels
-  lsd
-  fzf
-  ripgrep
-  ripgrep-all
-  fd
-  jq
-  yq
-  shellcheck
   htop
-  bmon
-  ncdu
   duf
-  nmap
-  iperf3
-  smartmontools
-  vale
-  direnv
-  lua
-  lua-language-server
+  dysk
   hugo
   go
-  bottom
   libwacom
   xf86-input-wacom
-  nodejs
-  npm
-  neovim
-  tree-sitter
   dunst
   feh
   sxhkd
@@ -116,26 +90,21 @@ PACKAGES=(
   clipmenu
   flameshot
   nsxiv
-  nnn
   xdg-utils
   xdg-user-dirs
   xdg-desktop-portal
   xdg-desktop-portal-gtk
-  brightnessctl
   ffmpegthumbnailer
   tumbler
-  file-roller
   ffmpeg
   imagemagick
   libheif
   libavif
-  webp-pixbuf-loader
   mpv
   mpd
   mpc
   mpd-mpris
   ncmpcpp
-  unclutter
   thunar
   thunar-archive-plugin
   thunar-volman
@@ -152,9 +121,6 @@ PACKAGES=(
   sws
   playerctl
   syncthing
-  lynis
-  rkhunter
-  cyme
   ttf-jetbrains-mono
   ttf-nerd-fonts-symbols
   ttf-nerd-fonts-symbols-mono
@@ -162,43 +128,30 @@ PACKAGES=(
   ttf-font-awesome
   noto-fonts-emoji
   noise-suppression-for-voice
-  pdfgrep
-  sox
-  duperemove
-  shellharden
   gparted
   xournalpp
-  libgsf
-  libappimage
-  swh-plugins
   lsp-plugins
   zathura
-  hunspell
-  hunspell-en_ca
   enchant
   steam
   firefox
+  bitwarden
+  zed
+  kimageformats
+  kimageformats5
 )
 
 # List of packages to install from the AUR
 AUR_PACKAGES=(
   vcvrack
-  bitwarden-bin
-  brave-bin
-  clipster
   xdg-ninja
-  z.lua
-  fzf-extras
-  fzf-tab-git
   gruvbox-material-gtk-theme-git
   gruvbox-material-icon-theme-git
   xcursor-simp1e-gruvbox-dark
-  kimageformats
-  xremap-x11-bin
 )
 # Install packages
 sudo pacman -S --needed --noconfirm "${PACKAGES[@]}"
-paru -S --needed --noconfirm "${AUR_PACKAGES[@]}"
+yay -S --needed --noconfirm "${AUR_PACKAGES[@]}"
 
 # Add user to groups
 for grp in tty realtime video audio input lp; do
@@ -206,7 +159,7 @@ for grp in tty realtime video audio input lp; do
 done
 
 # Enable services
-sudo systemctl enable --now NetworkManager cups cronie
+sudo systemctl enable --now NetworkManager cups
 
 # Create DWM .desktop file
 sudo mkdir -p /usr/share/xsessions
@@ -233,14 +186,13 @@ sudo mount -a
 cd ~/Github
 git clone https://github.com/tristengrant/suckless.git
 cd ~/Github/suckless/dwm && sudo make install
-cd ~/Github/suckless/dwmblocks-async && sudo make install
 cd ~/github/suckless/dmenu && sudo make install
 cd ~/Github/suckless/st && sudo make install
 
 # Update Krita
-cd ~/Scripts && ./update_krita.sh
+cd ~/Github/scripts && ./update_krita.sh
 
 # Enabling SDDM
-systemctl enable ly.service
+systemctl enable sddm.service
 
 echo "Installation complete. Reboot to apply all changes."
