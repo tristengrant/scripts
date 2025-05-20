@@ -88,6 +88,7 @@ PACKAGES=(
   kvantum
   polkit-gnome
   clipmenu
+  clipster
   flameshot
   nsxiv
   xdg-utils
