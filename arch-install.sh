@@ -19,7 +19,7 @@ fi
 #fi
 
 # Create necessary directories
-mkdir -p ~/Applications ~/Github ~/Documents ~/Music ~/Pictures/screenshots ~/Pictures/wallpapers ~/Videos
+mkdir -p ~/Applications ~/Github ~/Documents ~/Pictures/screenshots ~/Pictures/wallpapers ~/Videos
 
 # Set up AMD GPU config
 sudo tee /etc/X11/xorg.conf.d/20-amdgpu.conf >/dev/null <<EOF
@@ -187,4 +187,5 @@ cd ~/Github/scripts && ./update_krita.sh
 # Enabling SDDM
 systemctl enable sddm.service
 
-echo "Installation complete. Reboot to apply all changes."
+echo "✅ Installation complete. Reboot to apply all changes."
+echo "👉 After a reboot plug in your USB and run: ./mount-music.sh"
