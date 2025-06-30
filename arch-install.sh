@@ -75,8 +75,8 @@ PACKAGES=(
   htop
   duf
   dysk
-  hugo
-  go
+  nodejs
+  npm
   libwacom
   xf86-input-wacom
   dunst
@@ -105,6 +105,7 @@ PACKAGES=(
   mpc
   mpd-mpris
   ncmpcpp
+  rmpc
   thunar
   thunar-archive-plugin
   thunar-volman
@@ -136,12 +137,13 @@ PACKAGES=(
   steam
   firefox
   bitwarden
-  zed
+  vim
+  neovim
 )
 
 # List of packages to install from the AUR
 AUR_PACKAGES=(
-	clipster
+  clipster
   vcvrack
   xdg-ninja
   gruvbox-material-gtk-theme-git
