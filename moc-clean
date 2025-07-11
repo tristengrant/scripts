@@ -1,0 +1,13 @@
+#!/bin/bash
+
+PIDFILE="$HOME/.moc/pid"
+
+if [[ -f "$PIDFILE" ]]; then
+    PID=$(cat "$PIDFILE")
+    if ! ps -p "$PID" > /dev/null 2>&1; then
+        echo "Stale mocp pid file found. Removing..."
+        rm -f "$PIDFILE"
+    fi
+fi
+
+exec mocp

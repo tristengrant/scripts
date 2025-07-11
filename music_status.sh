@@ -12,7 +12,7 @@ song=$(mocp -Q %song 2>/dev/null)
 
 # Set different output for playing vs paused
 if [ "$status" = "PAUSE" ]; then
-  echo "%{F#f9c74f}⏸ $artist - $song%{F-}"
+  echo "%{F#707880}$artist - $song%{F-}"
 else
-  echo "%{F#90be6d}▶ $artist - $song%{F-}"
+  echo "%{F#FFFFFF}$artist - $song%{F-}"
 fi
