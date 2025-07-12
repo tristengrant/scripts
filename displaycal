@@ -1,0 +1,3 @@
+#!/bin/bash
+source ~/.venv-displaycal/bin/activate
+exec displaycal "$@"
