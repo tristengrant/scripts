@@ -1,15 +1,9 @@
 #!/usr/bin/env bash
-#===============================================================================
-# Debian Post-Install Script — Minimal Base + Audio + Graphics + Printing
-# For: clean Debian installs without a desktop environment
-Author: Tristen Grant
-#===============================================================================
 
 set -euo pipefail
 IFS=$'\n\t'
 
-#--- FUNCTIONS -----------------------------------------------------------------
-
+# Functions
 require_root() {
     if [[ "$EUID" -ne 0 ]]; then
         echo "⚠️  This script must be run as root or with sudo."
@@ -28,8 +22,7 @@ install_pkg() {
     fi
 }
 
-#--- MAIN ----------------------------------------------------------------------
-
+# Main
 require_root
 
 echo "🔄 Updating package lists..."
@@ -38,9 +31,7 @@ apt-get update -y
 echo "⬆️ Upgrading existing packages..."
 apt-get upgrade -y
 
-#------------------------------------------------------------------------------
 # Base Utilities
-#------------------------------------------------------------------------------
 echo "🧰 Installing essential system packages..."
 BASE_PKGS=(
     curl
@@ -95,9 +86,7 @@ BASE_PKGS=(
 )
 for pkg in "${BASE_PKGS[@]}"; do install_pkg "$pkg"; done
 
-#------------------------------------------------------------------------------
 # Display Server + DWM dependencies
-#------------------------------------------------------------------------------
 echo "🪟 Installing Xorg and basic window system..."
 DISPLAY_PKGS=(
     xorg
@@ -116,9 +105,7 @@ DISPLAY_PKGS=(
 )
 for pkg in "${DISPLAY_PKGS[@]}"; do install_pkg "$pkg"; done
 
-#------------------------------------------------------------------------------
 # PipeWire Audio Setup
-#------------------------------------------------------------------------------
 echo "🎧 Installing PipeWire and audio tools..."
 AUDIO_PKGS=(
     pipewire
@@ -134,9 +121,7 @@ AUDIO_PKGS=(
 )
 for pkg in "${AUDIO_PKGS[@]}"; do install_pkg "$pkg"; done
 
-#------------------------------------------------------------------------------
 # MPD / NCMPCPP Music Player
-#------------------------------------------------------------------------------
 echo "🎵 Installing music playback tools..."
 MUSIC_PKGS=(
     mpd
@@ -145,9 +130,7 @@ MUSIC_PKGS=(
 )
 for pkg in "${MUSIC_PKGS[@]}"; do install_pkg "$pkg"; done
 
-#------------------------------------------------------------------------------
 # Printing Support
-#------------------------------------------------------------------------------
 echo "🖨️ Installing printer support..."
 PRINT_PKGS=(
     cups
@@ -157,9 +140,7 @@ PRINT_PKGS=(
 )
 for pkg in "${PRINT_PKGS[@]}"; do install_pkg "$pkg"; done
 
-#------------------------------------------------------------------------------
 # Printer / Network Printer Setup
-#------------------------------------------------------------------------------
 echo "🖨️ Configuring CUPS for network printers..."
 
 # Enable and start CUPS
@@ -182,9 +163,7 @@ else
     echo "⚠️ HL-L2460DW not detected automatically. Add via http://localhost:631"
 fi
 
-#------------------------------------------------------------------------------
 # Fonts and Theming
-#------------------------------------------------------------------------------
 echo "🖋️ Installing fonts and themes..."
 FONT_PKGS=(
     fonts-dejavu
@@ -202,9 +181,7 @@ FONT_PKGS=(
 )
 for pkg in "${FONT_PKGS[@]}"; do install_pkg "$pkg"; done
 
-#------------------------------------------------------------------------------
-# Video
-#------------------------------------------------------------------------------
+# Video Packages
 echo "🖋️ Installing video packages..."
 VIDEO_PKGS=(
     mpv
@@ -216,9 +193,11 @@ VIDEO_PKGS=(
 )
 for pkg in "${VIDEO_PKGS[@]}"; do install_pkg "$pkg"; done
 
-#------------------------------------------------------------------------------
-# Misc
-#------------------------------------------------------------------------------
+# For steam
+dpkg --add-architecture i386
+apt-get update -y
+
+# Misc Packages
 echo "🖋️ Installing misc packages..."
 MISC_PKGS=(
     okular
@@ -243,12 +222,11 @@ MISC_PKGS=(
     peek
     filezilla
     scribus
+    steam-installer
 )
 for pkg in "${MISC_PKGS[@]}"; do install_pkg "$pkg"; done
 
-#------------------------------------------------------------------------------
 # Networking
-#------------------------------------------------------------------------------
 echo "🌐 Installing network utilities..."
 NET_PKGS=(
     network-manager
@@ -264,9 +242,7 @@ for pkg in "${NET_PKGS[@]}"; do install_pkg "$pkg"; done
 
 systemctl enable NetworkManager
 
-#------------------------------------------------------------------------------
 # Clean Up
-#------------------------------------------------------------------------------
 echo "🧹 Cleaning up..."
 apt-get autoremove -y
 apt-get clean
@@ -454,21 +430,21 @@ cd ~/Projects
 [ -d ~/Projects/suckless ] || git clone https://github.com/tristengrant/suckless.git
 
 echo "Installing DWM"
-cd ~/Projects/suckless/laptop/dwm
+cd ~/Projects/suckless/desktop/dwm
 make
 make install
 make clean
 rm config.h
 
 echo "Installing Dmenu"
-cd ~/Projects/suckless/laptop/dmenu
+cd ~/Projects/suckless/desktop/dmenu
 make
 make install
 make clean
 rm config.h
 
 echo "Installing Slstatus"
-cd ~/Projects/suckless/laptop/slstatus
+cd ~/Projects/suckless/desktop/slstatus
 make
 make install
 make clean
