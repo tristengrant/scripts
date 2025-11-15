@@ -51,7 +51,7 @@ apt install -y "${BASE_PKGS[@]}" || echo "WARNING: Some packages could not be in
 echo "Refreshing font cache..."
 fc-cache -fv
 
-echo "Install NPM packages for coding...""
+echo "Install NPM packages for coding..."
 npm install -g prettier stylelint typescript typescript-language-server vscode-langservers-extracted bash-language-server yaml-language-server
 
 # Set wezterm as default terminal emulator (fixes Debian 13 defaulting to lxterminal)
