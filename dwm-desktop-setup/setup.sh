@@ -10,6 +10,7 @@ sudo ./root/enable_services.sh
 ./user/dotfiles.sh
 ./user/scripts.sh
 ./user/apps.sh
+./user/suckless.sh
 ./user/theme.sh
 
 # Starting services

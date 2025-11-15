@@ -57,16 +57,6 @@ done
 
 echo "All AppImages downloaded to $DOWNLOAD_DIR."
 
-# Add DWM session
-sudo mkdir -p /usr/share/xsessions
-cat <<EOF | sudo tee /usr/share/xsessions/dwm.desktop >/dev/null
-[Desktop Entry]
-Name=dwm
-Comment=Dynamic window manager
-Exec=dwm
-Type=XSession
-EOF
-
 # Install Taplo TOML toolkit
 cd /home/tristen/Downloads
 curl -fsSL -o taplo.gz https://github.com/tamasfe/taplo/releases/latest/download/taplo-linux-x86_64.gz
