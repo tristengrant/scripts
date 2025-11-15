@@ -4,8 +4,9 @@ set -euo pipefail
 USER="tristen"
 HOME_DIR="/home/$USER"
 DOWNLOAD_DIR="$HOME_DIR/Downloads"
+LOCAL_BIN="$HOME_DIR/.local/bin"
 
-mkdir -p "$DOWNLOAD_DIR"
+mkdir -p "$DOWNLOAD_DIR" "$LOCAL_BIN"
 
 # Ensure jq is installed
 if ! command -v jq &> /dev/null; then
@@ -13,17 +14,14 @@ if ! command -v jq &> /dev/null; then
     sudo apt install -y jq
 fi
 
-# Define AppImages: Name|Source (GitHub repo or direct URL)
-APPIMAGES=(
-    "Krita|kde/krita"
-    "Bitwarden|bitwarden/desktop"
-    "Obsidian|obsidianmd/obsidian-releases"
-)
-
-for entry in "${APPIMAGES[@]}"; do
-    IFS='|' read -r NAME SOURCE <<< "$entry"
-
-    FILE="$DOWNLOAD_DIR/${NAME}.AppImage"
+### ------------------------------
+### Helper function to download AppImages
+### ------------------------------
+download_appimage() {
+    local NAME="$1"
+    local SOURCE="$2"
+    local FILE="$DOWNLOAD_DIR/${NAME}.AppImage"
+    local DOWNLOAD_URL=""
 
     if [[ "$NAME" == "Krita" ]]; then
         echo "Fetching latest Krita AppImage..."
@@ -31,16 +29,25 @@ for entry in "${APPIMAGES[@]}"; do
             | grep -Po '(?<=href=")[0-9]+\.[0-9]+\.[0-9]+(?=/")' \
             | sort -V | tail -n1)
         DOWNLOAD_URL="https://download.kde.org/stable/krita/${LATEST_VERSION}/krita-${LATEST_VERSION}-x86_64.AppImage"
+    elif [[ "$NAME" == "Obsidian" ]]; then
+        echo "Fetching latest Obsidian AppImage..."
+        API_URL="https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest"
+        DOWNLOAD_URL=$(curl -sSL "$API_URL" \
+            | jq -r '.assets[] | select(.name | test("^Obsidian-.*\\.AppImage$")) | .browser_download_url' \
+            | head -n1)
+        if [ -z "$DOWNLOAD_URL" ]; then
+            echo "❌ Could not find an AppImage for Obsidian, skipping."
+            return
+    fi
     elif [[ "$SOURCE" == *"/"* ]]; then
         echo "Fetching latest release for $NAME from GitHub..."
         API_URL="https://api.github.com/repos/$SOURCE/releases/latest"
         DOWNLOAD_URL=$(curl -sSL "$API_URL" \
             | jq -r '.assets[] | select(.name | test("AppImage$")) | .browser_download_url' \
             | head -n1)
-
         if [ -z "$DOWNLOAD_URL" ]; then
             echo "Warning: Could not find AppImage download for $NAME, skipping."
-            continue
+            return
         fi
     else
         DOWNLOAD_URL="$SOURCE"
@@ -53,117 +60,144 @@ for entry in "${APPIMAGES[@]}"; do
     else
         echo "$NAME AppImage already exists in $DOWNLOAD_DIR, skipping download."
     fi
+}
+
+### ------------------------------
+### Helper function to download and install .deb from GitHub
+### ------------------------------
+download_from_github() {
+    local OWNER="$1"
+    local REPO="$2"
+    local PATTERN="$3"
+    local OUT_DIR="$4"
+
+    echo "Fetching latest release for $REPO..."
+
+    # Special case: Jellyfin Media Player (assume Trixie)
+    if [[ "$REPO" == "jellyfin-media-player" ]]; then
+        file_name="jellyfin-media-player_1.12.0-trixie.deb"
+        url="https://github.com/jellyfin/${REPO}/releases/download/v1.12.0/$file_name"
+        out_file="$OUT_DIR/$file_name"
+        echo "Downloading $REPO to $out_file..."
+        curl -L -o "$out_file" "$url"
+
+        echo "Installing dependencies for Jellyfin Media Player..."
+        sudo apt update
+        sudo apt install -y libcec7 libqt5webchannel5 libqt5webengine5 \
+            qml-module-qtwebengine qml-module-qtwebchannel qml-module-qtquick-controls
+
+        echo "Installing $REPO..."
+        sudo dpkg -i "$out_file"
+        sudo apt-get install -f -y
+        rm -f "$out_file"
+        echo "$REPO installed successfully."
+        return
+    fi
+
+    # Clear broken Helix installs if needed
+    if [[ "$REPO" == "helix" ]]; then
+        sudo dpkg --remove --force-remove-reinstreq helix || true
+    fi
+
+    # Standard GitHub release flow
+    local API_URL="https://api.github.com/repos/${OWNER}/${REPO}/releases/latest"
+    local DOWNLOAD_URL
+    DOWNLOAD_URL=$(curl -sSL "$API_URL" \
+        | jq -r --arg pattern "$PATTERN" '.assets[] | select(.name | test($pattern)) | .browser_download_url' \
+        | head -n1)
+
+    if [ -z "$DOWNLOAD_URL" ]; then
+        echo "❌ Could not find a matching .deb asset for $REPO"
+        return 1
+    fi
+
+    local FILE_NAME
+    FILE_NAME=$(basename "$DOWNLOAD_URL")
+    local OUT_FILE="$OUT_DIR/$FILE_NAME"
+
+    echo "Downloading $REPO to $OUT_FILE..."
+    curl -L -o "$OUT_FILE" "$DOWNLOAD_URL"
+
+    echo "Installing $REPO..."
+    sudo dpkg -i "$OUT_FILE" || sudo apt-get install -f -y
+    rm -f "$OUT_FILE"
+    echo "$REPO installed successfully."
+}
+
+### ------------------------------
+### AppImages to download (sequential for stability)
+### ------------------------------
+APPIMAGES=(
+    "Krita|kde/krita"
+    "Bitwarden|bitwarden/desktop"
+    "Obsidian|obsidianmd/obsidian-releases"
+)
+
+for entry in "${APPIMAGES[@]}"; do
+    IFS='|' read -r NAME SOURCE <<< "$entry"
+    download_appimage "$NAME" "$SOURCE"
 done
+echo "All AppImages downloaded."
 
-echo "All AppImages downloaded to $DOWNLOAD_DIR."
+### ------------------------------
+### Install .deb packages sequentially
+### ------------------------------
+download_from_github "jellyfin" "jellyfin-media-player" ".*amd64.*\\.deb$" "$DOWNLOAD_DIR"
+download_from_github "gohugoio" "hugo" "hugo_extended.*amd64\\.deb$" "$DOWNLOAD_DIR"
+download_from_github "helix-editor" "helix" "helix_.*amd64\\.deb$" "$DOWNLOAD_DIR"
 
-# Install Taplo TOML toolkit
-cd /home/tristen/Downloads
-curl -fsSL -o taplo.gz https://github.com/tamasfe/taplo/releases/latest/download/taplo-linux-x86_64.gz
-gzip -d taplo.gz
-sudo install -m 755 taplo /usr/local/bin/taplo
-rm taplo
-echo "Taplo installed."
+### ------------------------------
+### Install ltex-ls-plus last
+### ------------------------------
+install_ltex_ls_plus() {
+    local OWNER="ltex-plus"
+    local REPO="ltex-ls-plus"
+    local DEST_DIR="$HOME_DIR/.local"
+    local FINAL_NAME="ltex-ls-plus"
 
-# Install marksman markdown assist
-curl -fsSL -o marksman  https://github.com/artempyanykh/marksman/releases/latest/download/marksman-linux-x64
-sudo install -m 755 marksman /usr/local/bin/marksman
-rm marksman
-echo "Marksman installed."
+    echo "Installing ${REPO} into ${DEST_DIR}/${FINAL_NAME}…"
 
-# Install markdown-oxide
-IFS=$'\n\t'
+    mkdir -p "$DEST_DIR"
 
-echo "Installing markdown-oxide via cargo..."
+    local TAG=$(curl -fsSL "https://api.github.com/repos/${OWNER}/${REPO}/releases/latest" \
+          | grep -Po '"tag_name":\s*"\K[^"]+')
+    echo "Latest version: $TAG"
 
-# Ensure Rust toolchain
-if ! command -v cargo >/dev/null; then
-  echo "Rust not found. Installing rustup and toolchain..."
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-  source "$HOME/.cargo/env"
-fi
-
-# Install markdown-oxide
-cargo install --locked --git https://github.com/Feel-ix-343/markdown-oxide.git markdown-oxide
-
-echo "markdown-oxide installed successfully."
-
-# Install latest ltex-ls-plus
-IFS=$'\n\t'
-
-OWNER="ltex-plus"
-REPO="ltex-ls-plus"
-DEST_DIR="$HOME/.local"
-FINAL_NAME="ltex-ls-plus"
-
-echo "Installing ${REPO} into ${DEST_DIR}/${FINAL_NAME}…"
-
-# Create destination if missing
-mkdir -p "$DEST_DIR"
-
-# Get latest tag
-tag=$(curl -fsSL "https://api.github.com/repos/${OWNER}/${REPO}/releases/latest" \
-      | grep -Po '"tag_name":\s*"\K[^"]+')
-if [ -z "$tag" ]; then
-  echo "❗ Could not fetch latest tag for ${OWNER}/${REPO}"
-  exit 1
-fi
-echo "Latest version: $tag"
-
-# Find linux x64 tar.gz asset
-asset=$(curl -fsSL "https://api.github.com/repos/${OWNER}/${REPO}/releases/latest" \
+    local ASSET=$(curl -fsSL "https://api.github.com/repos/${OWNER}/${REPO}/releases/latest" \
          | grep -Po '"name":\s*"\K[^"]+' \
          | grep -E 'linux.*x64.*\.tar\.gz$' \
          | head -n1)
-if [ -z "$asset" ]; then
-  echo "❗ Could not find linux x64 tar.gz asset for version $tag"
-  exit 1
-fi
-echo "Found asset: $asset"
+    echo "Found asset: $ASSET"
 
-# Construct download URL
-url="https://github.com/${OWNER}/${REPO}/releases/download/${tag}/${asset}"
-echo "Download URL: $url"
+    local URL="https://github.com/${OWNER}/${REPO}/releases/download/${TAG}/${ASSET}"
+    local TMPFILE=$(mktemp)
+    curl -fsSL -o "$TMPFILE" "$URL"
 
-# Download to temp file
-tmpfile=$(mktemp)
-curl -fsSL -o "$tmpfile" "$url"
+    local TMP_EXTRACT_DIR=$(mktemp -d)
+    tar -xzvf "$TMPFILE" -C "$TMP_EXTRACT_DIR"
 
-# Extract directly into DEST_DIR
-tmp_extract_dir=$(mktemp -d)
-tar -xzvf "$tmpfile" -C "$tmp_extract_dir"
+    local EXTRACTED=$(find "$TMP_EXTRACT_DIR" -maxdepth 1 -type d -name "${REPO}-*" | head -n1)
+    rm -rf "${DEST_DIR}/${FINAL_NAME}"
+    mv "$EXTRACTED" "${DEST_DIR}/${FINAL_NAME}"
 
-# Find the extracted folder
-extracted=$(find "$tmp_extract_dir" -maxdepth 1 -type d -name "${REPO}-*" | head -n1)
-if [ -z "$extracted" ]; then
-  echo "❗ Could not determine extracted directory"
-  exit 1
-fi
+    rm -f "$TMPFILE"
+    rm -rf "$TMP_EXTRACT_DIR"
 
-# Remove old install if exists
-rm -rf "${DEST_DIR}/${FINAL_NAME}"
+    ln -sf "$DEST_DIR/$FINAL_NAME/bin/ltex-ls-plus" "$LOCAL_BIN"
 
-# Move and rename
-mv "$extracted" "${DEST_DIR}/${FINAL_NAME}"
+    echo "Installed ${REPO} version $TAG into ${DEST_DIR}/${FINAL_NAME}"
+}
 
-# Clean up
-rm -f "$tmpfile"
-rm -rf "$tmp_extract_dir"
+install_ltex_ls_plus
 
-echo "Symlinking ltex-ls-plus bin to ~/.local/bin"
-ln -sf ~/.local/ltex-ls-plus/bin/ltex-ls-plus ~/.local/bin
-
-echo "Installed ${REPO} version $tag into ${DEST_DIR}/${FINAL_NAME}"
-
-echo "Writing todo file in Downloads directory..."
-cat > /home/tristen/Downloads/todo.txt <<EOF
+# --- todo.txt ---
+cat > "$DOWNLOAD_DIR/todo.txt" <<EOF
 Manually Install:
-Jellyfin Media Player - https://github.com/jellyfin/jellyfin-media-player/releases
-Hugo - https://github.com/gohugoio/hugo/releases/
 VCV Rack - https://vcvrack.com/Rack#get
 Reaper - https://www.reaper.fm/download.php
-Helix - https://github.com/helix-editor/helix/releases/
 EOF
 
-sudo chown -R tristen:tristen /home/tristen
-sudo chmod u+w /home/tristen
+sudo chown -R "$USER:$USER" "$HOME_DIR"
+sudo chmod u+w "$HOME_DIR"
+
+echo "All apps installed successfully."
