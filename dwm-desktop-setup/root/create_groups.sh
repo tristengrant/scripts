@@ -31,19 +31,11 @@ else
     echo "$LIMITS_FILE already exists. Skipping."
 fi
 
-# Enable PipeWire services for the user
-echo "Enabling PipeWire services for $USER..."
-sudo -u "$USER" systemctl --user enable pipewire pipewire-pulse wireplumber
-sudo -u "$USER" systemctl --user start pipewire pipewire-pulse wireplumber
+# Enable lingering so user services start even without login
+echo "Enabling user lingering for $USER..."
+loginctl enable-linger "$USER"
 
-# Verify PipeWire services are running
-echo "Verifying PipeWire services..."
-for svc in pipewire pipewire-pulse wireplumber; do
-    if sudo -u "$USER" systemctl --user is-active --quiet "$svc"; then
-        echo "$svc is running"
-    else
-        echo "$svc is not running"
-    fi
-done
-
-echo "Setup complete. Log out and back in for group changes and user services to take effect."
+echo ""
+echo "Done!"
+echo "IMPORTANT: Log out and back in to activate new groups."
+echo "PipeWire services will auto-start at login."
