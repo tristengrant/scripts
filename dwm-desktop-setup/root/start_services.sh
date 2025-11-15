@@ -2,4 +2,4 @@
 set -euo pipefail
 
 echo "Starting services..."
-systemctl start NetworkManager cups avahi-daemon acpid rtkit lightdm
+systemctl start NetworkManager cups avahi-daemon acpid lightdm

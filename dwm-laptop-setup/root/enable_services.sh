@@ -2,4 +2,4 @@
 set -euo pipefail
 
 echo "Enabling services..."
-systemctl enable NetworkManager cups avahi-daemon acpid rtkit lightdm
+systemctl enable NetworkManager cups avahi-daemon acpid lightdm
