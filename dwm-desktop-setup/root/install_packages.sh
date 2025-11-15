@@ -25,7 +25,7 @@ echo "Installing essential system packages..."
 BASE_PKGS=(
     xorg xorg-dev xinit xbacklight xbindkeys xinput build-essential sxhkd xdotool dbus-x11
     libnotify-bin libnotify-dev libusb-0.1-4 libwacom-common xserver-xorg-input-wacom
-    libx11-dev libxft-dev libxinerama-dev libxrandr-dev libx11-xcb-dev
+    libx11-dev libxft-dev libxinerama-dev libxrandr-dev libx11-xcb-dev ibxext-dev
     libxcb1-dev libxcb-util0-dev libxcb-keysyms1-dev libxcb-randr0-dev
     libxcb-xinerama0-dev libxcb-icccm4-dev libxcb-res0-dev steam-devices
     mesa-utils x11-xserver-utils xclip xdg-utils brightnessctl brightness-udev
