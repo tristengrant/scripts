@@ -6,7 +6,7 @@ HOME_DIR="/home/$USER"
 
 mkdir -p "$HOME_DIR/.config"
 
-cat > "$HOME/.config/user-dirs.dirs" <<'EOF'
+cat > "$HOME_DIR/.config/user-dirs.dirs" <<'EOF'
 XDG_DESKTOP_DIR="$HOME"
 XDG_DOCUMENTS_DIR="$HOME/documents"
 XDG_DOWNLOAD_DIR="$HOME/downloads"
