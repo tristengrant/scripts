@@ -1,45 +1,60 @@
 #!/bin/bash
-# DESC: Install Orchis Grey Dark GTK theme and Colloid Grey Dracula Dark icon theme
+# DESC: Install Orchis Grey Dark GTK theme and Colloid Grey Dracula Dark icon theme (no install.sh)
 
-set -e
+set -euo pipefail
 
-# Fixed configuration
 GTK_THEME="Orchis-Grey-Dark"
 ICON_THEME="Colloid-Grey-Dracula-Dark"
-TEMP_DIR="/tmp/theme_$$"
 
-# Cleanup on exit
-trap "rm -rf $TEMP_DIR" EXIT
+THEME_DIR="/home/tristen/.themes"
+ICON_DIR="/home/tristen/.icons"
+TEMP_DIR="/tmp/theme_$$"
 
 die() { echo "ERROR: $1" >&2; exit 1; }
 
-# Check if already installed
-[ -d "$HOME/.themes/$GTK_THEME" ] && [ -d "$HOME/.icons/$ICON_THEME" ] && {
-    echo "Themes already installed"
-    exit 0
-}
+trap "rm -rf $TEMP_DIR" EXIT
 
-# Install themes
-echo "Installing themes..."
-mkdir -p "$TEMP_DIR" && cd "$TEMP_DIR"
+mkdir -p "$THEME_DIR" "$ICON_DIR" "$TEMP_DIR"
 
-# GTK Theme
-git clone -q https://github.com/vinceliuice/Orchis-theme || die "Failed to clone GTK theme"
-cd Orchis-theme
-yes | ./install.sh -l -c dark -t grey --tweaks black >/dev/null 2>&1 || die "GTK theme install failed"
-
-# Icon Theme  
+echo "Downloading themes..."
 cd "$TEMP_DIR"
-git clone -q https://github.com/vinceliuice/Colloid-icon-theme || die "Failed to clone icon theme"
-cd Colloid-icon-theme
-./install.sh -t grey -s dracula 2>&1 | grep -v "sed: can't read" >/dev/null || true
 
-# Verify icon theme installation
-[ ! -d "$HOME/.local/share/icons/$ICON_THEME" ] && [ ! -d "$HOME/.icons/$ICON_THEME" ] && die "Icon theme installation verification failed"
+# GTK THEME (Orchis)
+git clone -q https://github.com/vinceliuice/Orchis-theme || die "Failed to clone Orchis theme"
 
-# Apply settings
-mkdir -p ~/.config/gtk-3.0
-cat > ~/.config/gtk-3.0/settings.ini << EOF
+# The repo contains many variants — we only want:
+# Orchis-Grey-Dark
+if [ ! -d "Orchis-theme/src/$GTK_THEME" ]; then
+    die "Expected GTK theme subfolder not found: Orchis-theme/src/$GTK_THEME"
+fi
+
+cp -r "Orchis-theme/src/$GTK_THEME" "$THEME_DIR/$GTK_THEME"
+echo "Installed GTK theme → $THEME_DIR/$GTK_THEME"
+
+# ICON THEME (Colloid)
+git clone -q https://github.com/vinceliuice/Colloid-icon-theme || die "Failed to clone Colloid icon theme"
+
+# Path inside repo:
+# Colloid-icon-theme/themes/Colloid-Grey-Dracula-Dark
+if [ ! -d "Colloid-icon-theme/themes/$ICON_THEME" ]; then
+    die "Expected icon theme subfolder not found: Colloid-icon-theme/themes/$ICON_THEME"
+fi
+
+cp -r "Colloid-icon-theme/themes/$ICON_THEME" "$ICON_DIR/$ICON_THEME"
+echo "Installed icon theme → $ICON_DIR/$ICON_THEME"
+
+# VERIFY
+[ ! -d "$THEME_DIR/$GTK_THEME" ] && die "GTK theme install failed"
+[ ! -d "$ICON_DIR/$ICON_THEME" ] && die "Icon theme install failed"
+
+# GTK CONFIG FILES
+
+echo "Writing GTK configuration files..."
+
+mkdir -p "/home/tristen/.config/gtk-3.0"
+
+# GTK 3
+cat > "/home/tristen/.config/gtk-3.0/settings.ini" <<EOF
 [Settings]
 gtk-theme-name=$GTK_THEME
 gtk-icon-theme-name=$ICON_THEME
@@ -50,7 +65,8 @@ gtk-xft-hinting=1
 gtk-xft-hintstyle=hintfull
 EOF
 
-cat > ~/.gtkrc-2.0 << EOF
+# GTK 2
+cat > "/home/tristen/.gtkrc-2.0" <<EOF
 gtk-theme-name="$GTK_THEME"
 gtk-icon-theme-name="$ICON_THEME"
 gtk-font-name="Sans 10"
@@ -59,6 +75,9 @@ gtk-xft-antialias=1
 gtk-xft-hinting=1
 gtk-xft-hintstyle="hintfull"
 EOF
+
+echo "Done!"
+echo "GTK + Icon themes installed and configured."
 
 # Apply via gsettings (required for GTK3 applications)
 gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME"
