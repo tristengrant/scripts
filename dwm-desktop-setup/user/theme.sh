@@ -22,7 +22,7 @@ echo "Cloning themes..."
 git clone -q https://github.com/vinceliuice/Orchis-theme || die "Failed to clone Orchis theme"
 cd Orchis-theme
 # Run install.sh with options for Grey + Dark
-./install.sh -c dark -t grey || die "Orchis theme installation failed"
+./install.sh -c dark -t grey -d /home/tristen/.themes || die "Orchis theme installation failed"
 cd "$TEMP_DIR"
 
 # ICON THEME (Colloid)
