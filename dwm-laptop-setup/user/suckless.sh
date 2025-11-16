@@ -23,9 +23,7 @@ build_component() {
     local COMP_NAME=$1
     local COMP_DIR="$REPO_DIR/desktop/$COMP_NAME"
 
-    echo "==============================="
     echo "Building $COMP_NAME…"
-    echo "==============================="
 
     cd "$COMP_DIR"
 
@@ -44,16 +42,5 @@ build_component "st"
 build_component "dmenu"
 build_component "slock"
 build_component "slstatus"
-
-# Install DWM session file
-echo "Installing DWM .desktop session file…"
-sudo mkdir -p /usr/share/xsessions
-cat <<EOF | sudo tee /usr/share/xsessions/dwm.desktop >/dev/null
-[Desktop Entry]
-Name=dwm
-Comment=Dynamic window manager
-Exec=dwm
-Type=XSession
-EOF
 
 echo "All suckless software built and installed successfully."
