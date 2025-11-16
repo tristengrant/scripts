@@ -3,11 +3,11 @@ set -euo pipefail
 
 USER="tristen"
 HOME_DIR="/home/$USER"
-REPO_DIR="$HOME_DIR/Projects/suckless"
+REPO_DIR="$HOME_DIR/projects/suckless"
 
 echo "Preparing Suckless build environment…"
 
-mkdir -p "$HOME_DIR/Projects"
+mkdir -p "$HOME_DIR/projects"
 
 # Clone or update repo
 if [ ! -d "$REPO_DIR" ]; then
