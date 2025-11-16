@@ -16,12 +16,12 @@ XDG_VIDEOS_DIR="$HOME/videos"
 EOF
 
 echo "Making sure default directories are created..."
-xdg-user-dirs-update
+xdg-user-dirs-update --force
 
 echo "Cloning and symlinking dotfiles..."
 mkdir -p "$HOME_DIR/projects"
 mkdir -p "$HOME_DIR/applications"
-mkdir -p ~/.local/share/applications
+mkdir -p "$HOME_DIR/.local/share/applications"
 
 cd "$HOME_DIR/projects"
 [ -d "$HOME_DIR/projects/dotfiles" ] || git clone https://github.com/tristengrant/dotfiles.git
