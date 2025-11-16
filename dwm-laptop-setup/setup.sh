@@ -13,6 +13,6 @@ sudo ./root/enable_services.sh
 ./user/theme.sh
 
 # Starting services
-sudo ./root/start_services.sh || echo "Some services failed to start, but continuing..."
+#sudo ./root/start_services.sh || echo "Some services failed to start, but continuing..."
 
 echo "Setup complete! Log out and select 'DWM' from your display manager."

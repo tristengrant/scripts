@@ -66,7 +66,7 @@ echo "Done!"
 echo "GTK + Icon themes installed and configured."
 
 # Apply via gsettings (GTK3 applications)
-gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME"
-gsettings set org.gnome.desktop.interface icon-theme "$ICON_THEME"
+#gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME"
+#gsettings set org.gnome.desktop.interface icon-theme "$ICON_THEME"
 
 echo "Themes installed and applied successfully"
