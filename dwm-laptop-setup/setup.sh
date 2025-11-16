@@ -8,7 +8,6 @@ sudo ./root/enable_services.sh
 
 # User-level tasks (hardcoded user)
 ./user/dotfiles.sh
-./user/scripts.sh
 ./user/apps.sh
 ./user/suckless.sh
 ./user/theme.sh
