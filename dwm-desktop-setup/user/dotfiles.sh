@@ -21,7 +21,9 @@ xdg-user-dirs-update --force
 echo "Cloning and symlinking dotfiles..."
 mkdir -p "$HOME_DIR/projects"
 mkdir -p "$HOME_DIR/applications"
+mkdir -p "$HOME_DIR/.local/bin"
 mkdir -p "$HOME_DIR/.local/share/applications"
+mkdir -p "$HOME_DIR/.local/state"
 
 cd "$HOME_DIR/projects"
 [ -d "$HOME_DIR/projects/dotfiles" ] || git clone https://github.com/tristengrant/dotfiles.git
