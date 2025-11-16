@@ -7,14 +7,14 @@ HOME_DIR="/home/$USER"
 mkdir -p "$HOME_DIR/.config"
 
 cat > "$HOME_DIR/.config/user-dirs.dirs" <<'EOF'
-XDG_DESKTOP_DIR="$HOME/"
-XDG_DOCUMENTS_DIR="$HOME/documents"
-XDG_DOWNLOAD_DIR="$HOME/downloads"
-XDG_MUSIC_DIR="$HOME/music"
-XDG_PICTURES_DIR="$HOME/pictures"
-XDG_VIDEOS_DIR="$HOME/videos"
-XDG_TEMPLATES_DIR="$HOME/"
-XDG_PUBLICSHARE_DIR="$HOME/"
+XDG_DESKTOP_DIR="/home/tristen"
+XDG_DOCUMENTS_DIR="/home/tristen/documents"
+XDG_DOWNLOAD_DIR="/home/tristen/downloads"
+XDG_MUSIC_DIR="/home/tristen/music"
+XDG_PICTURES_DIR="/home/tristen/pictures"
+XDG_VIDEOS_DIR="/home/tristen/videos"
+XDG_TEMPLATES_DIR="/home/tristen/"
+XDG_PUBLICSHARE_DIR="/home/tristen/"
 EOF
 
 echo "Making home directories..."
