@@ -7,24 +7,29 @@ HOME_DIR="/home/$USER"
 mkdir -p "$HOME_DIR/.config"
 
 cat > "$HOME_DIR/.config/user-dirs.dirs" <<'EOF'
-XDG_DESKTOP_DIR="$HOME"
+XDG_DESKTOP_DIR="$HOME/"
 XDG_DOCUMENTS_DIR="$HOME/documents"
 XDG_DOWNLOAD_DIR="$HOME/downloads"
 XDG_MUSIC_DIR="$HOME/music"
 XDG_PICTURES_DIR="$HOME/pictures"
 XDG_VIDEOS_DIR="$HOME/videos"
+XDG_TEMPLATES_DIR="$HOME/"
+XDG_PUBLICSHARE_DIR="$HOME/"
 EOF
 
-echo "Making sure default directories are created..."
-xdg-user-dirs-update --force
-
-echo "Cloning and symlinking dotfiles..."
+echo "Making home directories..."
+mkdir -p "$HOME_DIR/documents"
+mkdir -p "$HOME_DIR/downloads"
+mkdir -p "$HOME_DIR/music"
+mkdir -p "$HOME_DIR/pictures"
+mkdir -p "$HOME_DIR/videos"
 mkdir -p "$HOME_DIR/projects"
 mkdir -p "$HOME_DIR/applications"
 mkdir -p "$HOME_DIR/.local/bin"
 mkdir -p "$HOME_DIR/.local/share/applications"
 mkdir -p "$HOME_DIR/.local/state"
 
+echo "Cloning and symlinking dotfiles..."
 cd "$HOME_DIR/projects"
 [ -d "$HOME_DIR/projects/dotfiles" ] || git clone https://github.com/tristengrant/dotfiles.git
 
