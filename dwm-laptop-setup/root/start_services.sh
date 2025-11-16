@@ -2,4 +2,4 @@
 set -euo pipefail
 
 echo "Starting services..."
-systemctl start NetworkManager cups avahi-daemon acpid lightdm
+systemctl start --no-block  NetworkManager cups cups-browsed avahi-daemon acpid lightdm

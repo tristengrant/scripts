@@ -33,7 +33,7 @@ BASE_PKGS=(
     mesa-utils x11-xserver-utils xclip xdg-utils brightnessctl brightness-udev
     network-manager-gnome network-manager-applet dnsutils openssh-client openssh-server
     sshfs smbclient syncthing pipewire pipewire-audio pipewire-pulse pipewire-alsa
-    pipewire-jack wireplumber alsa-utils pavucontrol pulsemixer pamixer
+    pipewire-jack wireplumber alsa-utils pavucontrol pulsemixer pamixer cups-browsed
     mpd mpc ncmpcpp rtkit thunar thunar-archive-plugin thunar-volman gvfs-backends
     gvfs-common dialog mtools cups printer-driver-cups-pdf printer-driver-brlaser
     system-config-printer unar unzip tar gzip zip udiskie avahi-daemon acpi acpid
