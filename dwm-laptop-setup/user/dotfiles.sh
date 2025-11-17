@@ -41,6 +41,7 @@ ln -sf "$HOME_DIR/projects/dotfiles/config/helix" "$HOME_DIR/.config/helix"
 ln -sf "$HOME_DIR/projects/dotfiles/config/kitty" "$HOME_DIR/.config/kitty"
 ln -sf "$HOME_DIR/projects/dotfiles/config/mpv" "$HOME_DIR/.config/mpv"
 ln -sf "$HOME_DIR/projects/dotfiles/config/qt5ct" "$HOME_DIR/.config/qt5ct"
+ln -sf "$HOME_DIR/projects/dotfiles/config/mpd" "$HOME_DIR/.config/mpd"
 
 # In home directory
 ln -sf "$HOME_DIR/projects/dotfiles/dot_xinitrc" "$HOME_DIR/.xinitrc"
