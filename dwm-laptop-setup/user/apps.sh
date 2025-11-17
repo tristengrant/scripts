@@ -3,7 +3,7 @@ set -euo pipefail
 
 USER="tristen"
 HOME_DIR="/home/$USER"
-DOWNLOAD_DIR="$HOME_DIR/downloads"
+DOWNLOAD_DIR="$HOME_DIR/Downloads"
 LOCAL_BIN="$HOME_DIR/.local/bin"
 
 mkdir -p "$DOWNLOAD_DIR" "$LOCAL_BIN"

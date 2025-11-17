@@ -3,11 +3,11 @@ set -euo pipefail
 
 USER="tristen"
 HOME_DIR="/home/$USER"
-REPO_DIR="$HOME_DIR/projects/suckless"
+REPO_DIR="$HOME_DIR/Projects/suckless"
 
 echo "Preparing Suckless build environment…"
 
-mkdir -p "$HOME_DIR/projects"
+mkdir -p "$HOME_DIR/Projects"
 
 # Clone or update repo
 if [ ! -d "$REPO_DIR" ]; then
@@ -21,7 +21,7 @@ fi
 
 build_component() {
     local COMP_NAME=$1
-    local COMP_DIR="$REPO_DIR/desktop/$COMP_NAME"
+    local COMP_DIR="$REPO_DIR/laptop/$COMP_NAME"
 
     echo "Building $COMP_NAME…"
 
