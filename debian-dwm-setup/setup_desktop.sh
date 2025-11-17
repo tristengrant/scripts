@@ -16,4 +16,6 @@ sudo ./root/enable_services.sh
 
 sudo chown -R tristen:tristen /home/tristen/*
 
+sudo sensors-detect
+
 echo "Setup complete! Reboot the computer."

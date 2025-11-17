@@ -4,6 +4,12 @@
 # Shows "(paused) Artist - Title" if paused
 # Shows nothing if MPD is not running
 
+case $BLOCK_BUTTON in
+    1) mpc toggle ;;  # left click: play/pause
+    2) mpc next ;;    # middle click: next song
+    3) mpc prev ;;    # right click: previous song
+esac
+
 # Exit if MPD is not running
 if ! pgrep mpd >/dev/null 2>&1; then
     echo ""
