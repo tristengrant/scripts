@@ -3,16 +3,6 @@
 # Threshold for warning (percent)
 THRESHOLD=85
 
-# Click actions
-case $BLOCK_BUTTON in
-    1) notify-send "Disk usage" "$(df -h / | awk 'NR==2 {print $3 " used of " $2 " (" $5 " used)"}')" ;;
-    2) setsid -f "$TERMINAL" -e ncdu / ;;
-    3) notify-send "Disk module" "- Shows % used of /.
-- Click to show usage details.
-- Middle click opens ncdu." ;;
-    6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
-esac
-
 # Get root usage percentage as a number
 usage=$(df / | awk 'NR==2 {gsub("%","",$5); print $5}')
 
