@@ -1,40 +1,37 @@
 #!/bin/bash
-# Shows current MPD song in the format "Artist - Title"
-# Truncates to 30 characters
-# Shows "(paused) Artist - Title" if paused
-# Shows nothing if MPD is not running
 
-case $BLOCK_BUTTON in
-    1) mpc toggle ;;  # left click: play/pause
-    2) mpc next ;;    # middle click: next song
-    3) mpc prev ;;    # right click: previous song
+BLOCK_BUTTON="${BLOCK_BUTTON:-}"
+
+# Safe wrapper for click actions (ignore all output)
+mpc_click() { mpc "$@" >/dev/null 2>&1 || true; }
+
+# Exit if MPD not running
+pgrep -x mpd >/dev/null 2>&1 || { echo ""; exit 0; }
+
+# Handle click actions
+case "$BLOCK_BUTTON" in
+    1) mpc_click toggle ;;
+    2) mpc_click prev ;;
+    3) mpc_click next ;;
 esac
 
-# Exit if MPD is not running
-if ! pgrep mpd >/dev/null 2>&1; then
-    echo ""
-    exit 0
+# Get current song safely
+song=$(mpc current 2>/dev/null) || song=""
+[ -z "$song" ] && { echo ""; exit 0; }
+
+# Get playback status safely
+status_raw=$(mpc status 2>/dev/null) || status_raw=""
+status_line=$(echo "$status_raw" | awk 'NR==2{print}') || status_line=""
+
+# Play/pause symbol
+if echo "$status_line" | grep -q '\[paused\]' 2>/dev/null; then
+    symbol="⏸"
+else
+    symbol="▶"
 fi
 
-# Get current song info
-song=$(mpc current)
-status=$(mpc status 2>/dev/null | head -n2 | tail -n1)
+# Output
+echo "$symbol $song"
 
-# Exit if nothing is playing
-if [ -z "$song" ]; then
-    echo ""
-    exit 0
-fi
-
-# Prepend "(paused)" if song is paused
-if echo "$status" | grep -q '\[paused\]'; then
-    song="(paused) $song"
-fi
-
-# Truncate long titles
-maxlen=30
-if [ ${#song} -gt $maxlen ]; then
-    song="${song:0:$maxlen}…"
-fi
-
-echo "$song"
+# Force exit 0
+exit 0

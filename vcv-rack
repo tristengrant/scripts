@@ -1,0 +1,3 @@
+#!/bin/bash
+cd /home/tristen/.opt/VCV/Rack2Pro/ || exit
+exec pw-jack ./Rack "$@"
