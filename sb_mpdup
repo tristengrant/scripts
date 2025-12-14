@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Copied from Luke Smith - https://github.com/LukeSmithxyz/voidrice/tree/master/.local/bin/statusbar
+
+STATUSBAR="${STATUSBAR:-dwmblocks}"
+SIGNAL=2
+
+while : ; do
+	mpc idle >/dev/null && kill -RTMIN+$SIGNAL "$(pidof "$STATUSBAR")" || break
+done
