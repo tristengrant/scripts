@@ -1,6 +1,8 @@
 #!/bin/bash
 
-xrandr --output DisplayPort-0 --off --output DisplayPort-1 --mode 3440x1440 --pos 0x0 --rotate normal --output HDMI-A-0 --off --output DisplayPort-2 --mode 2560x1440 --pos 440x1440 --rotate normal
+xrandr --output DP-1 --off --output DP-2 --primary --mode 3440x1440 --pos 0x0 --rotate normal --output HDMI-1 --off --output DP-3 --mode 2560x1440 --pos 371x1440 --rotate normal
+
+feh --bg-fill --randomize ~/Pictures/wallpapers/* &
 
 # Define tablet name
 TABLET_NAME="Wacom Cintiq Pro 16"
@@ -12,10 +14,10 @@ TOUCH="$TABLET_NAME Touch Finger touch"
 ERASER="$TABLET_NAME Pen eraser"
 
 # Set mapping to a specific monitor
-xsetwacom set "$STYLUS" MapToOutput DisplayPort-2
-xsetwacom set "$ERASER" MapToOutput DisplayPort-2
-xsetwacom set "$TOUCH" MapToOutput DisplayPort-2
-xsetwacom set "$PAD" MapToOutput DisplayPort-2
+xsetwacom set "$STYLUS" MapToOutput DP-3
+xsetwacom set "$ERASER" MapToOutput DP-3
+xsetwacom set "$TOUCH" MapToOutput DP-3
+xsetwacom set "$PAD" MapToOutput DP-3
 
 # Turn tablet's touch settings off
 xsetwacom set "$TOUCH" Touch "off"
