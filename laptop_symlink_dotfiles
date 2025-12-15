@@ -20,3 +20,9 @@ ln -sf "$HOME_DIR/Projects/dotfiles/dot_bashrc" "$HOME_DIR/.bashrc"
 ln -sf "$HOME_DIR/Projects/dotfiles/dot_bash_profile" "$HOME_DIR/.bash_profile"
 ln -sf "$HOME_DIR/Projects/dotfiles/dot_xprofile" "$HOME_DIR/.xprofile"
 ln -sf "$HOME_DIR/Projects/dotfiles/dot_Xresources" "$HOME_DIR/.Xresources"
+ln -sf "$HOME_DIR/Projects/dotfiles/dot_gitconfig" "$HOME_DIR/.gitconfig"
+ln -sf "$HOME_DIR/Projects/dotfiles/dot_gtk-bookmarks" "$HOME_DIR/.gtk-bookmarks"
+ln -sf "$HOME_DIR/Projects/dotfiles/dot_gtkrc-2.0" "$HOME_DIR/.gtkrc-2.0"
+
+# Telekasten NeoVim Plugin Templates
+ln -sf "$HOME_DIR/Projects/dotfiles/telekasten-nvim/templates" "$HOME_DIR/Documents/notes"
