@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+HOME_DIR="/home/tristen"
+
 # In .config
 ln -sf "$HOME_DIR/Projects/dotfiles/config/mpv" "$HOME_DIR/.config/mpv"
 ln -sf "$HOME_DIR/Projects/dotfiles/config/dunst" "$HOME_DIR/.config/dunst"
