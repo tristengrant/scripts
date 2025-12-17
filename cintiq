@@ -2,7 +2,7 @@
 
 xrandr --output DP-1 --off --output DP-2 --primary --mode 3440x1440 --pos 0x0 --rotate normal --output HDMI-1 --off --output DP-3 --mode 2560x1440 --pos 371x1440 --rotate normal
 
-feh --bg-fill --randomize ~/Pictures/wallpapers/* &
+#feh --bg-fill --randomize ~/Pictures/wallpapers/* &
 
 # Define tablet name
 TABLET_NAME="Wacom Cintiq Pro 16"
