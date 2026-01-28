@@ -7,8 +7,8 @@ filter() {
 	NR==1 { song=$0 }
 	NR==2 {
 		icon="▶"
-		if ($0 ~ /\[paused\]/) icon="⏸"
-		if ($0 ~ /\[stopped\]/) icon="⏹"
+		if ($0 ~ /\[paused\]/) icon=""
+		if ($0 ~ /\[stopped\]/) icon=""
 		print icon " " song
 	}'
 }

@@ -32,6 +32,7 @@ xsetwacom set "$TOUCH" Touch "off"
 xsetwacom set "$STYLUS" Rotate "none"
 
 # Pen Buttons
+xsetwacom set "$STYLUS" Button 1 "button +1" # Pen tip (draw - don't edit)
 xsetwacom set "$STYLUS" Button 2 "button +1" # Right Click (draw)
 xsetwacom set "$STYLUS" Button 3 "button +2" # Middle Click (move canvas)
 
