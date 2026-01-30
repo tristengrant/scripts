@@ -27,3 +27,8 @@ ln -sf "$HOME_DIR/Projects/dotfiles/dot_gtkrc-2.0" "$HOME_DIR/.gtkrc-2.0"
 
 # Telekasten NeoVim Plugin Templates
 ln -sf "$HOME_DIR/Projects/dotfiles/telekasten-nvim/templates" "$HOME_DIR/Documents/notes"
+
+# .Desktop files
+cp "$HOME_DIR/Projects/dotfiles/dot-desktop/nsxiv.desktop" "/usr/share/applications/"
+cp "$HOME_DIR/Projects/dotfiles/dot-desktop/vcvrack.desktop" "/usr/share/applications/"
+cp "$HOME_DIR/Projects/dotfiles/dot-desktop/cockos-reaper.desktop" "/usr/share/applications/"
