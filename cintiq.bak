@@ -6,9 +6,7 @@ notify-send "Cintiq display connected"
 
 feh --bg-fill --randomize ~/Pictures/wallpapers/* &
 
-until xsetwacom list devices | grep -q "Wacom Cintiq Pro 16"; do
-    sleep 1
-done
+sleep 5
 
 notify-send "Cintiq settings applied"
 
